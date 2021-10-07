@@ -21,7 +21,7 @@ function short_answer_question( title, text, answer )
     
     return short_answer_question( title, text, answer, 0.1, [], 1 )
 end 
-
+ 
 @doc """
 converts this type of function to XML string
 """ ->
