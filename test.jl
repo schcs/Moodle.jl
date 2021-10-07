@@ -1,3 +1,3 @@
-f = function( x, y )
+function f( x, y )
     return x+y
 end
