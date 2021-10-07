@@ -1,0 +1,3 @@
+var documenterSearchIndex = {"docs":
+[{"location":"#Moodle.jl","page":"Home","title":"Moodle.jl","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"An experimental Julia package for creating Moodle questions.","category":"page"},{"location":"#Package-Features","page":"Home","title":"Package Features","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"Create short answer type questions","category":"page"},{"location":"#Function-Documentation","page":"Home","title":"Function Documentation","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"QuestionToXML","category":"page"},{"location":"","page":"Home","title":"Home","text":"MoodleQuestionnaireToXML","category":"page"}]
+}
