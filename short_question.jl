@@ -23,7 +23,7 @@ function short_answer_question( title, text, answer )
 end 
 
 @doc """
-converts this type of function to XML string
+converts short answer type question to XML string
 """ ->
 
 function QuestionToXML( question::short_answer_question )
