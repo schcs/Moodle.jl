@@ -9,9 +9,9 @@ struct short_answer_question
     title::String               # the title of the question
     text::String                # the text of the question
     answer::String              # the right answer
-    penalty::Float64            # required by Moodle, it's usually 1.0
+    penalty::Float64            # required by Moodle, it's usually 0.1
     tags::Vector{String}        # list of tags
-    defgrade::Int64             # required by Moodle, usuall 1
+    defgrade::Int64             # required by Moodle, usually 1
 end 
 
 # the following function creates short_answer_question from the first 
@@ -21,6 +21,32 @@ function short_answer_question( title, text, answer )
     
     return short_answer_question( title, text, answer, 0.1, [], 1 )
 end 
+
+@doc """ 
+Show function to short_answer_question
+"""
+
+function Base.show( io::IO, q::short_answer_question )  
+        print(io, "Short answer question\n\tTitle: ", q.title, 
+                "\n\tText: ", q.text[1:min(length(q.text),20)]*"...", 
+                "\n\tAnswer: ", q.answer  )
+end
+
+@doc """
+Creates short answer question with title. The text of the question is text in which 
+[[i]] is replaced by the latex form of the i-th entry in mobj. The answer is obtained
+by applying the function func to mobj.
+""" ->
+ 
+function ShortAnswerQuestion( title::String, text::String, mobj::Tuple, func )
+
+    for i in 1:length(mobj)
+        text = replace( text, "[["*string(i)*"]]" => latex_form( mobj[i] ))
+    end 
+    
+    result = func( mobj... )
+    return short_answer_question( title, text, string( result ))
+end
 
 @doc """
 converts short answer type question to XML string
@@ -48,7 +74,7 @@ function QuestionToXML( question::short_answer_question )
         for tag in question.tags 
             xmlstring *= "<tag>\n<text>"*tag*"</text>\n</tag>\n"
         end 
-        xmlstringtext *= "</tags>\n"
+        xmlstring *= "</tags>\n"
     end
 
     # end of question
