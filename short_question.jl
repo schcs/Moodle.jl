@@ -36,9 +36,32 @@ end
 Creates short answer question with title. The text of the question is text in which 
 [[i]] is replaced by the latex form of the i-th entry in mobj. The answer is obtained
 by applying the function func to mobj.
+
+julia> using LinearAlgebra
+
+julia> A = [1 2;3 4]
+2×2 Matrix{Int64}:
+ 1  2
+ 3  4
+
+julia> B = [-1 0 ; 0 1 ]
+2×2 Matrix{Int64}:
+ -1  0
+  0  1
+
+julia> func(x,y) = LinearAlgebra.det( x*y )
+func (generic function with 1 method)
+
+julia> q = ShortAnswerQuestion( "Determinant", "Qual é o determinante de \\(AB\\) onde \\[A=[[1]]\\] e \\[B=[[2]].\\]", (A,B), func )
+Short answer question
+        Title: Determinant
+        Text: Qual é o determinan...
+        Answer: 2.0
+
 """ ->
  
-function ShortAnswerQuestion( title::String, text::String, mobj::Tuple, func )
+function ShortAnswerQuestion( title::String, 
+            text::String, mobj::Tuple, func )::short_answer_question
 
     for i in 1:length(mobj)
         text = replace( text, "[["*string(i)*"]]" => latex_form( mobj[i] ))
