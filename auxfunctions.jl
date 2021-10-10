@@ -22,17 +22,15 @@ end
 
 # Gives determinant of integer matrix by converting it to a rational matrix, using the det function, 
 # and converting the answer back to an integer (just using det can give floating points!)
-function IntDet( A :: Array{2,Integer})
+
+#function IntDet( A :: Array{2,Integer})  CSABA: I get an error with the specification of Integer, dunno why
+function IntDet( A :: Array)
     return Int(det(A//1))
 end
 
 # Given a tuple of things [X_1 , ... , X_n] and a function f taking X_i as an input, returns 
-# [ [X_1 , f(X_1)] , .... , [X_n , f(X_n)] ].  "QAlist" is Question-Answer list
+# [ [X_1 , f(X_1)] , .... , [X_n , f(X_n)] ].  "QApairs" is Question-Answer pairs
 function QApairs( ListOfAnswers::Tuple , func )
-    QAlist = [];
-    for i in 1:length(ListOfAnswers)
-        push!(QAlist , [ListOfAnswers[i], func(ListOfAnswers[i])])
-    end
-
-    return QAlist
+    return [ [x,func(x)] for x in ListOfAnswers ]
 end
+
