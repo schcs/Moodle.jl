@@ -1,3 +1,4 @@
+
 using LinearAlgebra
 
 
@@ -33,4 +34,3 @@ end
 function QApairs( ListOfAnswers::Tuple , func )
     return [ [x,func(x)] for x in ListOfAnswers ]
 end
-

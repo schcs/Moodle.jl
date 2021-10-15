@@ -5,5 +5,6 @@
 using LatexPrint
 
 include( "short_question.jl" )
+include( "matching_question_jwm.jl" )
 include( "questionnaire.jl" )
-
+include( "auxfunctions.jl" )
