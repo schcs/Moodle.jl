@@ -28,6 +28,12 @@ function matching_question( title, text, subquestions, shuffle )
     return matching_question( title, text, subquestions, 1, 0.1, shuffle, [] )
 end 
 
+# function to display matching question
+
+function Base.show( io::IO, q::matching_question )  
+    print(io, "Matching\n\tTitle: ", q.title, 
+            "\n\tText: ", q.text[1:min(length(q.text),20)]*"..." )
+end
 
 
 function MoodleSubQuestion( QApair :: Vector )
@@ -103,9 +109,6 @@ end
 
 
 
-#@doc """ 
-#Show function to short_answer_question
-#"""
 
 # I'm ignoring this for now
 

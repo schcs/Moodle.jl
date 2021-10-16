@@ -6,20 +6,21 @@ The data structure to hold a short answer type Moodle question
 """ ->
 
 struct short_answer_question
-    title::String               # the title of the question
-    text::String                # the text of the question
-    answer::String              # the right answer
-    penalty::Float64            # required by Moodle, it's usually 0.1
-    tags::Vector{String}        # list of tags
-    defgrade::Int64             # required by Moodle, usually 1
+    title::String                   # the title of the question
+    text::String                    # the text of the question
+    answer::Union{String,Number}    # the right answer
+    penalty::Float64                # required by Moodle, it's usually 0.1
+    tags::Vector{String}            # list of tags
+    defgrade::Int64                 # required by Moodle, usually 1
 end 
 
 # the following function creates short_answer_question from the first 
 # three attributes -- the others will take the default value
 
-function short_answer_question( title, text, answer )
+function short_answer_question( title, text, answer; 
+                        penalty = 0.1, tags = [], defgrade = 1 )
     
-    return short_answer_question( title, text, answer, 0.1, [], 1 )
+    return short_answer_question( title, text, answer, penalty, tags, defgrade )
 end 
 
 @doc """ 
