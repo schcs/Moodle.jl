@@ -1,10 +1,10 @@
 # Inside make.jl
 push!(LOAD_PATH,"../")
-include( "../main.jl" )
+include( "/home/csaba/Projects/Moodle.jl/main.jl" )
 using Documenter
 makedocs(
          sitename = "Moodle.jl",
-         #modules  = [],
+         modules  = Module[],
          pages=[
                 "Home" => "index.md"
                ])
