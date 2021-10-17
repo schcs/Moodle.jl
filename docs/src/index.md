@@ -15,9 +15,9 @@ In the case of short answer type questions, Moodle displays a question and provi
 The standard way of creating a short answer type question is to call `short_answer_question`.
 ```@repl
 include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
-title = "What is the GCD?" 
-text = "What is the GCD of \\(5\\) and \\(7\\)?"
-answer = 2
+title = "What is the GCD?";
+text = "What is the GCD of \\(5\\) and \\(7\\)?";
+answer = 2;
 q1 = short_answer_question( title, text, answer, 0.1, [ "Q1", "T0"], 1 )
 ```
 The first input string is the tile of the question, the second is the text of the  question, while the third argument is the right answer. The next argument defines the  value of "penalty", then there is the list of tags (used in Moodle), while the final argument is the value of the default grade. [We should explain penalty and defgrade.]
@@ -29,9 +29,9 @@ be given with the optional parameters `penalty`, `defgrade`, and `tags`. Conside
 
 ```@repl
 include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
-title = "What is the GCD?" 
-text = "What is the GCD of \\(5\\) and \\(7\\)?"
-answer = 2
+title = "What is the GCD?"; 
+text = "What is the GCD of \\(5\\) and \\(7\\)?";
+answer = 2;
 q2 = short_answer_question( title, text, answer, tags = [ "Q1", "T0"] )
 ```
 
@@ -40,22 +40,24 @@ Another way of creating a short answer type question is using a list of mathemat
 ```@repl
 include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
 import LinearAlgebra
-title = "Determinant" 
-text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?"
-A = [1 2; -1 2 ]
-B = [1 -1; 0 2 ]
+title = "Determinant"; 
+text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?";
+A = [1 2; -1 2 ];
+B = [1 -1; 0 2 ];
 func(x,y) = LinearAlgebra.det( x*y )
 q3 = ShortAnswerQuestion( title, text, (A,B), func )
 ```
 
 In the last form, the first two arguments are the same as for `short_answer_question`, but the question text contains the markers `[[1]]`, `[[2]]`, etc, that show where the mathematical objects in the third argument should be places in the question text. The third argument is a tuple of objects and `func` is a Julia function that can be applied to the objects in the third argument. The given by the function on these arguments will be the correct answer for the question.
 
+## Multiple choice questions
+
 ## Creating a questionnaire and writing it into an XML file
 
 Once the questions are generated, a Moodle questionnaire can be created by the `moodle_questionnaire` function
 ```@repl
 include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
-category = "MyQuestionnaire", 
+category = "MyQuestionnaire"; 
 q = moodle_questionnaire( category, [ q1, q2, q3 ])
 ```
 
