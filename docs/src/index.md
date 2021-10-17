@@ -105,7 +105,6 @@ q = moodle_questionnaire( category, [ q1, q2, q3 ])
 ```
 
 ```@repl q_xml
-include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
 MoodleQuestionnaireToXML( q, "testfile.xml" )
 ```
 Calling `MoodleQuestionnaireToXML` as above creates a file called `testfile.xml`in the current directory and write the questions into this file which, in turn, can be imported into Moodle.
