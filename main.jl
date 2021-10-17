@@ -11,5 +11,3 @@ include( current_dir*"/matching_question_jwm.jl" )
 include( current_dir*"/questionnaire.jl" )
 include( current_dir*"/auxfunctions.jl" )
 
-short_answer_question
-
