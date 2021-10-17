@@ -43,17 +43,20 @@ include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
 import LinearAlgebra
 title = "Determinant"; 
 text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?";
-A = [1 2; -1 2 ];
-B = [1 -1; 0 2 ];
-func(x,y) = LinearAlgebra.det( x*y )
+A = [1 2; -1 2 ]; B = [1 -1; 0 2 ];
+func(x,y) = Integer( round( LinearAlgebra.det( x*y )))
 q3 = ShortAnswerQuestion( title, text, (A,B), func )
 ```
 
-In the last form, the first two arguments are the same as for `short_answer_question`, but the question text contains the markers `[[1]]`, `[[2]]`, etc, that show where the mathematical objects in the third argument should be places in the question text. The third argument is a tuple of objects and `func` is a Julia function that can be applied to the objects in the third argument. The given by the function on these arguments will be the correct answer for the question.
+In the last form, the first two arguments are the same as for `short_answer_question`, but the question text contains the markers `[[1]]`, `[[2]]`, etc, that show where the mathematical objects in the third argument should be placed in the question text. The third argument is a tuple of objects and `func` is a Julia function that can be applied to the objects in the third argument. The output given by the function on these arguments will be the correct answer for the question.
 
 ## Multiple choice questions
 
+To be written.
+
 ## Matching questions
+
+To be written.
 
 ## Creating a questionnaire and writing it into an XML file
 
@@ -98,7 +101,7 @@ import LinearAlgebra
 title = "Determinant"; 
 text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?";
 A = [1 2; -1 2 ];B = [1 -1; 0 2 ];
-func(x,y) = LinearAlgebra.det( x*y )
+func(x,y) = Int(round(LinearAlgebra.det( x*y )))
 q3 = ShortAnswerQuestion( title, text, (A,B), func )
 category = "MyQuestionnaire"; 
 q = moodle_questionnaire( category, [ q1, q2, q3 ])
@@ -107,4 +110,4 @@ q = moodle_questionnaire( category, [ q1, q2, q3 ])
 ```@repl q_xml
 MoodleQuestionnaireToXML( q, "testfile.xml" )
 ```
-Calling `MoodleQuestionnaireToXML` as above creates a file called `testfile.xml`in the current directory and write the questions into this file which, in turn, can be imported into Moodle.
+Calling `MoodleQuestionnaireToXML` as above creates a file called `testfile.xml`in the current directory and writes the questions into this file which, in turn, can be imported into Moodle.
