@@ -59,7 +59,7 @@ In the last form, the first two arguments are the same as for `short_answer_ques
 
 Once the questions are generated, a Moodle questionnaire can be created by the `moodle_questionnaire` function
 ```@setup m_q
-include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
+include( "/home/csaba/Projects/Moodle.jl/main.jl" ) 
 title = "What is the GCD?";
 text = "What is the GCD of \\(5\\) and \\(7\\)?";
 answer = 2;
@@ -71,14 +71,12 @@ q2 = short_answer_question( title, text, answer, tags = [ "Q1", "T0"] )
 import LinearAlgebra
 title = "Determinant"; 
 text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?";
-A = [1 2; -1 2 ];
-B = [1 -1; 0 2 ];
+A = [1 2; -1 2 ];B = [1 -1; 0 2 ];
 func(x,y) = LinearAlgebra.det( x*y )
 q3 = ShortAnswerQuestion( title, text, (A,B), func )
 ```
 
 ```@repl m_q
-include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
 category = "MyQuestionnaire"; 
 q = moodle_questionnaire( category, [ q1, q2, q3 ])
 ```
@@ -86,7 +84,27 @@ q = moodle_questionnaire( category, [ q1, q2, q3 ])
 The first argument is a string defining the category of the questionnaire (as required by Moodle) while the second is the list of questions.
 
 The questionnaire can be written to an XML file using the MoodleQuestionnaireToXML function. 
-```@repl
+```@setup q_xml
+include( "/home/csaba/Projects/Moodle.jl/main.jl" ) 
+title = "What is the GCD?";
+text = "What is the GCD of \\(5\\) and \\(7\\)?";
+answer = 2;
+q1 = short_answer_question( title, text, answer, 0.1, [ "Q1", "T0"], 1 )
+title = "What is the GCD?"; 
+text = "What is the GCD of \\(5\\) and \\(7\\)?";
+answer = 2;
+q2 = short_answer_question( title, text, answer, tags = [ "Q1", "T0"] )
+import LinearAlgebra
+title = "Determinant"; 
+text = "What is the determinant of the product \\(AB\\) where \\(A=[[1]]\\) and \\(B=[[2]]\\)?";
+A = [1 2; -1 2 ];B = [1 -1; 0 2 ];
+func(x,y) = LinearAlgebra.det( x*y )
+q3 = ShortAnswerQuestion( title, text, (A,B), func )
+category = "MyQuestionnaire"; 
+q = moodle_questionnaire( category, [ q1, q2, q3 ])
+```
+
+```@repl q_xml
 include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #hide
 MoodleQuestionnaireToXML( q, "testfile.xml" )
 ```
