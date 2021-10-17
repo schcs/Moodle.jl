@@ -90,7 +90,7 @@ function QuestionToXML( question::short_answer_question )
             "<hidden>0</hidden>\n"*
             "<usecase>0</usecase>\n"* 
             "<answer fraction=\"100\" format=\"plain_text\"><text>"*
-            question.answer*"</text>\n</answer>\n"
+            string( question.answer )*"</text>\n</answer>\n"
 
     # if question has at least one tag, then they are added
     if length( question.tags ) > 0  
