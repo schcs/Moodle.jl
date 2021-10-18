@@ -4,6 +4,8 @@
 # this file contains the functions related to questions
 # of V/F type using the CLOZE type question of Moodle
 
+
+# THIS ISN'T DONE YET:
 @doc """
 The data structure to hold a VF_CLOZE type Moodle question
 """ ->
@@ -19,13 +21,7 @@ end
 
 
 
-# the idea is that the question will take 4 inputs title, text, subquestions, shuffle.  
-# penalty will be 0.1, defgrade will be 1, and tags will be empty.  I'm testing to see if I can avoid taking the first 4 entries above.
 
-function matching_question( title, text, subquestions, shuffle )
-    
-    return matching_question( title, text, subquestions, 1, 0.1, shuffle, [] )
-end 
 
 
 # Given a pair (Statement, 1/0), where Statement is a string and 1 means it's true and 0 means it's false, gives as output
@@ -108,72 +104,9 @@ end
 
 
 
-function MoodleSubQuestion( QApair :: Vector )
-    question = QApair[1] 
-    answer = QApair[2]
-
-    if question != "" 
-
-        text = "<subquestion format=\"html\">\n"* 
-                "<text><![CDATA[<p>\\("*
-                latex_form(question) *
-                "\\)</p>]]></text>\n"*
-                "<answer><text>"*  string(answer) * "</text></answer>\n"* 
-                "</subquestion>\n"
-    else 
-
-        text = "<subquestion format=\"html\">\n"* 
-                "<text></text>\n"*
-                "<answer><text>"*  string(answer) * "</text></answer>\n"* 
-                "</subquestion>\n"
-    end
-
-    return text
-
-end
 
 
 
-
-@doc """
-converts matching type question to XML string
-""" ->
-
-function QuestionToXML( question::matching_question )
-
-
-    xmlstring = "<question type=\"matching\">\n<name format=\"html\">\n"*
-            "<text><![CDATA["* question.title* "]]></text>\n"*
-            "</name>\n"* 
-            "<questiontext format=\"html\">\n"*
-            "<text><![CDATA[<p>"* question.text* "</p>]]></text>\n"*
-            "</questiontext>\n"*
-            "<defaultgrade>"* string( question.defgrade )* "</defaultgrade>\n"* 
-            "<generalfeedback format=\"html\"><text/></generalfeedback>\n"*
-            "<penalty>"* string(question.penalty)* "</penalty>\n"*
-            "<hidden>0</hidden>\n"*
-            "<shuffleanswers>"* string( question.shuffle )* "</shuffleanswers>\n" 
-   
-
-
-    for ans in question.subquestions
-        xmlstring *= MoodleSubQuestion( ans )
-    end
-
-
-    # if question has at least one tag, then they are added
-    if length( question.tags ) > 0  
-        xmlstring *= "<tags>\n"
-        for tag in question.tags 
-            xmlstring *= "<tag>\n<text>"*tag*"</text>\n</tag>\n"
-        end 
-        xmlstring *= "</tags>\n"
-    end
-
-    # end of question
-    xmlstring *= "</question>\n" 
-    return xmlstring
-end
  
 
 
