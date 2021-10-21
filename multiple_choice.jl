@@ -41,7 +41,7 @@ function multiple_choice_question_by_lists( title, text, rightanswers, wrongansw
     defgrade = 1, 
     single = false,
     shuffle = true, 
-    wrongmarkzero = true )
+    wrongmarkzero = false )
 
     answers = [ (x,true) for x in rightanswers ]
     append!( answers, [ (x,false) for x in wronganswers ])
@@ -95,7 +95,7 @@ function QuestionToXML( question::multiple_choice_question )
     if question.wrongmarkzero 
         wrongmark = 0;
     else
-        wrongmark = wrongmarks[Length(wronganswers)];
+        wrongmark = wrongmarks[length(wronganswers)];
     end
         
 
