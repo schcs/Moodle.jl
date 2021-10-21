@@ -2,7 +2,7 @@
 # it has to be included to use the functions
 
 
-using LatexPrint, StatsBase
+using LatexPrint, StatsBase, LinearAlgebra
 
 current_dir = @__DIR__
 

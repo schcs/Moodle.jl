@@ -8,7 +8,7 @@ The data structure to hold a multiple choice type Moodle question
 struct multiple_choice_question
     title::String                   # the title of the question
     text::String                    # the text of the question
-    answers::Vector{Tuple}          # the right answers
+    answers::Vector{Tuple}          # the answers
     penalty::Float64                # required by Moodle, it's usually 0.1
     tags::Vector{String}            # list of tags
     defgrade::Int64                 # required by Moodle, usually 1
@@ -46,8 +46,22 @@ function multiple_choice_question_by_lists( title, text, rightanswers, wrongansw
     answers = [ (x,true) for x in rightanswers ]
     append!( answers, [ (x,false) for x in wronganswers ])
 
-return multiple_choice_question( title, text, answers, penalty, 
-    tags, defgrade, single, shuffle, wrongmarkzero )
+    return multiple_choice_question( title, text, answers, penalty, 
+        tags, defgrade, single, shuffle, wrongmarkzero )
+end 
+
+function multiple_choice_question_by_function( title, text, answers, func;  
+    penalty = 0.1, 
+    tags = [], 
+    defgrade = 1, 
+    single = false,
+    shuffle = true, 
+    wrongmarkzero = false )
+
+    answers = [ (x,func( x )) for x in answers ]
+
+    return multiple_choice_question( title, text, answers, penalty, 
+        tags, defgrade, single, shuffle, wrongmarkzero )
 end 
 
 
@@ -61,7 +75,7 @@ end
 function moodle_answer( answer, value )
 
     text = "<answer fraction=\""*string( value )*"\" format=\"html\">\n"* 
-            "<text><![CDATA[<p>"*string( answer )*
+            "<text><![CDATA[<p>"*moodle_latex_form( answer )*
             "</p>]]></text>\n</answer>\n"
 
     return text

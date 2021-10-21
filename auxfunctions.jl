@@ -1,6 +1,16 @@
+# using LinearAlgebra
 
-using LinearAlgebra
+# if arg is a string then we want to inser it in the Moodle form as is. 
+# if arg is a math object than we want to insert it in LaTeX
+# this function will make this conversion
 
+function moodle_latex_form( arg::Any )
+    if typeof( arg ) == String 
+        return arg
+    else
+        return "\\("*latex_form( arg )*"\\)"
+    end
+end
 
 
 # IntZeroMat(m,n) gives an mxn integer 0 matrix
