@@ -3,7 +3,9 @@
 # MoodleQuestion is an abstract type defined as the union of all question types
 # at the moment only one question type is defined
 
-MoodleQuestion = Union{short_answer_question, matching_question} 
+MoodleQuestion = Union{short_answer_question, 
+                             matching_question, 
+                             multiple_choice_question} 
 
 ```@doc 
 The data sructure that holds a questionnaire
