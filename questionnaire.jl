@@ -5,7 +5,8 @@
 
 MoodleQuestion = Union{short_answer_question, 
                              matching_question, 
-                             multiple_choice_question} 
+                             multiple_choice_question,
+                             VF_CLOZE_question} 
 
 ```@doc 
 The data sructure that holds a questionnaire
