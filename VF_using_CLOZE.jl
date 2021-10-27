@@ -50,22 +50,43 @@ end
 
 
 # this function uses "sample" which requires the package StatsBase
+# This first version chooses NumQuest statements randomly from the list Statements
+function Choose_TF_Statements( Statements :: Vector, NumQuest :: Int64)
+  local QuestionsTaken :: Vector
 
+  QuestionsTaken = sample(Statements, NumQuest, replace = false)
 
-function Choose_TF_Statements( Statements :: Vector, NumTrue :: Int64, NumFalse :: Int64 )
-    local TrueList :: Vector, FalseList :: Vector, X :: Vector
-
-    TrueList = [ Statements[i] for i in 1:length(Statements) if Statements[i][2] == true ]
-    FalseList = [ Statements[i] for i in 1:length(Statements) if Statements[i][2] == false ]
-
-    TruesTaken = sample(TrueList, NumTrue, replace = false)
-    FalsesTaken = sample(FalseList, NumFalse, replace = false)
-
-    X = [TruesTaken; FalsesTaken]
-
-    return sample(X, length(X), replace = false)
+  return QuestionsTaken
 end
 
+
+
+
+# This second version has a third variable, "NumTrue", which allows the user to choose how many of the NumQuest
+# statements chosen are true
+function Choose_TF_Statements( Statements :: Vector, NumQuest :: Int64, NumTrue :: Int64 )
+  local TrueList :: Vector, FalseList :: Vector, X :: Vector, NumFalse :: Int64
+
+  NumFalse = NumQuest - NumTrue
+
+  TrueList = [ Statements[i] for i in 1:length(Statements) if Statements[i][2] == true ]
+  FalseList = [ Statements[i] for i in 1:length(Statements) if Statements[i][2] == false ]
+
+  TruesTaken = sample(TrueList, NumTrue, replace = false)
+  FalsesTaken = sample(FalseList, NumFalse, replace = false)
+
+  X = [TruesTaken; FalsesTaken]
+
+  return sample(X, length(X), replace = false)
+end
+
+function OurFunc( Number :: Int64)
+  return 2*Number
+end
+
+function OurFunc( Text :: String )
+  return Text
+end
 
 #title :: String, initial_text :: String ,  list_of_statements :: Vector
 
