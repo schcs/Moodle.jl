@@ -99,25 +99,37 @@ function QuestionToXML( question::multiple_choice_question )
             "</shuffleanswers>\n"* 
             "<answernumbering>abc</answernumbering>\n"
     
-    rightanswers = [ x[1] for x in question.answers if x[2]]
-    wronganswers = [ x[1] for x in question.answers if !x[2]]
+    rightanswers = [ x[1] for x in question.answers if x[2] > 0 ]
+    wronganswers = [ x[1] for x in question.answers if x[2] <= 0 ]
+
+    pos_marks = [ x[2] for x in question.answers if 
+            !isa( x[2], Bool ) && x[2] > 0 ]
+    neg_marks = [ x[2] for x in question.answers if   
+            !isa( x[2], Bool ) && x[2] < 0 ]
     
-    wrongmarks = [ "-100", "-50", "-33.33333", "-25", "-20" ]
-    rightmarks = [ "100", "50", "33.33333", "25", "20" ]
-    rightmark = rightmarks[length( rightanswers )]
-            
-    if question.wrongmarkzero 
-        wrongmark = 0;
-    else
-        wrongmark = wrongmarks[length(wronganswers)];
+    push!( pos_marks, 0 )
+    push!( neg_marks, 0 )
+
+    ans_true = length( [ x for x in question.answers if isa( x[2], Bool ) && x[2]])
+    ans_false = length( [ x for x in question.answers if isa( x[2], Bool ) && !x[2]])
+
+    default_rightmark = round( (100-sum( pos_marks ))/length( ans_true ), 
+                                        digits = 7 )
+
+    if question.wrongmarkzero
+        default_wrongmark = 0
+    else    
+        default_wrongmark = round( (-100+sum( neg_marks ))/length( ans_false ), 
+                                        digits = 7 )
     end
-        
 
     for ans in question.answers 
-        if ans[2]
-            xmltext *= moodle_answer( ans[1], rightmark )
-        else
-            xmltext *= moodle_answer( ans[1], wrongmark )
+        if isa( ans[2], Bool ) && ans[2] 
+            xmltext *= moodle_answer( ans[1], default_rightmark )
+        elseif isa( ans[2], Bool ) && !ans[2]
+            xmltext *= moodle_answer( ans[1], default_wrongmark )
+        elseif isa( ans[2], Number )
+            xmltext *= moodle_answer( ans[1], 100*round( ans[2], digits = 7 ))
         end
     end
 

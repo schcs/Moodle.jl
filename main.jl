@@ -2,12 +2,7 @@
 # it has to be included to use the functions
 
 
-<<<<<<< HEAD
-using LatexPrint
-using StatsBase
-=======
 using LatexPrint, StatsBase, LinearAlgebra
->>>>>>> 5178242b691cd4e90168dfbeb62a2c86f7ade509
 
 current_dir = @__DIR__
 
