@@ -28,6 +28,46 @@ function multiple_choice_question( title, text, answers;
                                     shuffle = true,
                                     wrongmarkzero = false )
     
+    # the following is the list of valid marks in Moodle
+    validmarks = [ 100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333, 
+                    30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5, 0, 
+                    -100, -90, -83.33333, -80, -75, -70, -66.66667, -60, -50, 
+                    -40, -33.33333, -30, -25, -20, -16.66667, -14.28571, -12.5, 
+                    -11.11111, -10, -5 ]    
+
+    answers = Array{Tuple{Any,Real}}(answers)
+    
+    ind_true = findall( x -> isa( x[2], Bool ) && x[2], answers )
+    ind_false = findall( x -> isa( x[2], Bool ) && !x[2], answers )
+    ind_pos = findall( x -> !isa( x[2], Bool ) && x[2] > 0, answers )
+    ind_neg = findall( x -> !isa( x[2], Bool ) && x[2] <= 0, answers )
+
+    if nothing in [ findfirst( x->abs(x-answers[y][2]) < 1, 
+                    validmarks ) for y in vcat( ind_pos, ind_neg )] 
+        throw( "Error: Invalid mark!" )
+    end
+
+    sum_pos = sum((x->x[2]).(answers[ind_pos]))
+
+    if sum_pos > 100 || (sum_pos == 100 && length(ind_true) > 0)
+        throw( "Error: some of positive marks is too high!" )
+    end
+
+    default_rightmark = validmarks[findfirst( 
+                x->abs( x - (100-sum_pos)/length( ind_true )) < 1, validmarks )]
+
+    if typeof( default_rightmark ) == Nothing
+        throw( "Error: Could not determine a valid right mark." )
+    end 
+    
+    for i in ind_true
+        answers[i] = (answers[i][1],default_rightmark)
+    end
+
+    for i in ind_false
+        answers[i] = (answers[i][1],0)
+    end
+
     return multiple_choice_question( title, text, answers, penalty, 
                                     tags, defgrade, single, shuffle, wrongmarkzero )
 end 
@@ -99,38 +139,8 @@ function QuestionToXML( question::multiple_choice_question )
             "</shuffleanswers>\n"* 
             "<answernumbering>abc</answernumbering>\n"
     
-    rightanswers = [ x[1] for x in question.answers if x[2] > 0 ]
-    wronganswers = [ x[1] for x in question.answers if x[2] <= 0 ]
-
-    pos_marks = [ x[2] for x in question.answers if 
-            !isa( x[2], Bool ) && x[2] > 0 ]
-    neg_marks = [ x[2] for x in question.answers if   
-            !isa( x[2], Bool ) && x[2] < 0 ]
-    
-    push!( pos_marks, 0 )
-    push!( neg_marks, 0 )
-
-    ans_true = length( [ x for x in question.answers if isa( x[2], Bool ) && x[2]])
-    ans_false = length( [ x for x in question.answers if isa( x[2], Bool ) && !x[2]])
-
-    default_rightmark = round( (100-sum( pos_marks ))/length( ans_true ), 
-                                        digits = 7 )
-
-    if question.wrongmarkzero
-        default_wrongmark = 0
-    else    
-        default_wrongmark = round( (-100+sum( neg_marks ))/length( ans_false ), 
-                                        digits = 7 )
-    end
-
     for ans in question.answers 
-        if isa( ans[2], Bool ) && ans[2] 
-            xmltext *= moodle_answer( ans[1], default_rightmark )
-        elseif isa( ans[2], Bool ) && !ans[2]
-            xmltext *= moodle_answer( ans[1], default_wrongmark )
-        elseif isa( ans[2], Number )
-            xmltext *= moodle_answer( ans[1], 100*round( ans[2], digits = 7 ))
-        end
+        xmltext *= moodle_answer( ans... )
     end
 
     if length( question.tags ) > 0  
