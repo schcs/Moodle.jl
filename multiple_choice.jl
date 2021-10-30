@@ -36,6 +36,10 @@ function multiple_choice_question( title, text, answers;
                     -11.11111, -10, -5 ]    
 
     answers = Array{Tuple{Any,Real}}(answers)
+
+    if single && length( findall( x->x[2] == 100 || x[2] == true, answers )) != 1
+        throw( "Error: Precisely one right answer in radio button type." )
+    end
     
     ind_true = findall( x -> isa( x[2], Bool ) && x[2], answers )
     ind_false = findall( x -> isa( x[2], Bool ) && !x[2], answers )
@@ -48,24 +52,48 @@ function multiple_choice_question( title, text, answers;
     end
 
     sum_pos = sum((x->x[2]).(answers[ind_pos]))
+    sum_neg = sum((x->x[2]).(answers[ind_neg]))
 
-    if sum_pos > 100 || (sum_pos == 100 && length(ind_true) > 0)
-        throw( "Error: some of positive marks is too high!" )
+
+    if ( !single && sum_pos > 100) || (sum_pos == 100 && length(ind_true) > 0) || 
+                ( sum_pos < 100 && length( ind_true ) == 0 )
+        throw( "Error: sum of positive marks is incorrect!" )
     end
 
-    default_rightmark = validmarks[findfirst( 
-                x->abs( x - (100-sum_pos)/length( ind_true )) < 1, validmarks )]
+    if sum_neg < -100 
+        throw( "Error: sum of positive marks is incorrect!" )
+    end
 
-    if typeof( default_rightmark ) == Nothing
-        throw( "Error: Could not determine a valid right mark." )
-    end 
+
+    if length( ind_true ) > 0 
+        default_rightmark = findfirst( 
+            x->abs( x - (100-sum_pos)/length( ind_true )) < 1, validmarks )
+        if typeof( default_rightmark ) == Nothing
+            throw( "Error: Could not determine a valid right mark." )
+        end
+        default_rightmark = validmarks[default_rightmark]        
+    else
+        default_rightmark = 0
+    end
+
+    if wrongmarkzero || length( ind_false ) == 0
+        default_wrongmark = 0
+    else
+        default_wrongmark = findfirst( 
+                x->abs( x - (-100-sum_neg)/length( ind_false )) < 1, validmarks )
+        if typeof( default_wrongmark ) == Nothing
+            throw( "Error: Could not determine a valid wrong mark." )
+        end
+        default_wrongmark = validmarks[default_wrongmark] 
+            
+    end
     
     for i in ind_true
         answers[i] = (answers[i][1],default_rightmark)
     end
 
     for i in ind_false
-        answers[i] = (answers[i][1],0)
+        answers[i] = (answers[i][1], default_wrongmark)
     end
 
     return multiple_choice_question( title, text, answers, penalty, 
