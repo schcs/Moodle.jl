@@ -64,16 +64,23 @@ function multiple_choice_question( title, text, answers;
         throw( "Error: sum of positive marks is incorrect!" )
     end
 
+    if single 
+        
+        default_rightmark = 100
 
-    if length( ind_true ) > 0 
+    elseif length( ind_true ) > 0 
+        
         default_rightmark = findfirst( 
             x->abs( x - (100-sum_pos)/length( ind_true )) < 1, validmarks )
         if typeof( default_rightmark ) == Nothing
             throw( "Error: Could not determine a valid right mark." )
         end
-        default_rightmark = validmarks[default_rightmark]        
+        default_rightmark = validmarks[default_rightmark]
+
     else
+        
         default_rightmark = 0
+        
     end
 
     if wrongmarkzero || length( ind_false ) == 0
