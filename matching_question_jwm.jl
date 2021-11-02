@@ -14,7 +14,7 @@ struct matching_question
     subquestions::Vector{Vector}    # things to be matched
     defgrade::Int64                 # required by Moodle, usually 1
     penalty::Float64                # we're not sure about this.  required by Moodle, it's usually 0.1
-    shuffle::Int64                  # Csaba says "1 if we want answers permuted" -- I guess it's 0 if not?
+    shuffle::Bool                  # Csaba says "1 if we want answers permuted" -- I guess it's 0 if not?
     tags::Vector{String}            # list of tags
 end 
 
@@ -23,9 +23,9 @@ end
 # the idea is that the question will take 4 inputs title, text, subquestions, shuffle.  
 # penalty will be 0.1, defgrade will be 1, and tags will be empty.  I'm testing to see if I can avoid taking the first 4 entries above.
 
-function matching_question( title, text, subquestions, shuffle )
+function matching_question( title, text, subquestions; defgrade = 1, penalty = 0.1, shuffle = true, tags = [] )
     
-    return matching_question( title, text, subquestions, 1, 0.1, shuffle, [] )
+    return matching_question( title, text, subquestions, defgrade, penalty, shuffle, tags )
 end 
 
 
@@ -38,7 +38,7 @@ function MoodleSubQuestion( QApair :: Vector )
 
         text = "<subquestion format=\"html\">\n"* 
                 "<text><![CDATA[<p>\\("*
-                latex_form(question) *
+                moodle_latex_form(question) *
                 "\\)</p>]]></text>\n"*
                 "<answer><text>"*  string(answer) * "</text></answer>\n"* 
                 "</subquestion>\n"
