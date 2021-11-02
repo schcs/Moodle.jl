@@ -97,7 +97,7 @@ function QuestionToXML(  question :: VF_CLOZE_question )
     local i :: Int64, XMLversion :: Vector,  output :: String
 
 
-    XMLversion = [ "\n<p dir=\"ltr\">\\( \\medskip\\)<br></p><p dir=\"ltr\"></p><p dir=\"ltr\">\n"*TF_Question_For_CLOZE_In_XML( i[1], i[2] ) for i in question.list_of_statements ]
+    XMLversion = [ "\n<p dir=\"ltr\"><br><br></p><p dir=\"ltr\"></p><p dir=\"ltr\">\n"*TF_Question_For_CLOZE_In_XML( i[1], i[2] ) for i in question.list_of_statements ]
     output = ""
 
     output = "
