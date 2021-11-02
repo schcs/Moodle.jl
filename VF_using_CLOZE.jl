@@ -16,13 +16,13 @@ struct VF_CLOZE_question
     list_of_statements::Vector      # list of TF statements in form (statement , true/false)
  #   defgrade::Int64                 # required by Moodle, usually 1
  #   penalty::Float64                # we're not sure about this.  required by Moodle, it's usually 0.1
- #   tags::Vector{String}            # list of tags
+    tags::Vector{String}            # list of tags
 end 
 
 # most basic implementation, with initial text "Para cada das seguintes afirmações, decida se ela é verdadeira ou falsa:"
-function VF_CLOZE_question( title, initial_text, list_of_statements )
+function VF_CLOZE_question( title, initial_text, list_of_statements ; tags = [] )
     
-    return VF_CLOZE_question( title, initial_text, list_of_statements )
+    return VF_CLOZE_question( title, initial_text, list_of_statements, tags )
 end 
 
 
@@ -80,13 +80,7 @@ function Choose_TF_Statements( Statements :: Vector, NumQuest :: Int64, NumTrue 
   return sample(X, length(X), replace = false)
 end
 
-function OurFunc( Number :: Int64)
-  return 2*Number
-end
 
-function OurFunc( Text :: String )
-  return Text
-end
 
 #title :: String, initial_text :: String ,  list_of_statements :: Vector
 
@@ -100,7 +94,7 @@ function QuestionToXML(  question :: VF_CLOZE_question )
     XMLversion = [ "\n<p dir=\"ltr\"><br><br></p><p dir=\"ltr\"></p><p dir=\"ltr\">\n"*TF_Question_For_CLOZE_In_XML( i[1], i[2] ) for i in question.list_of_statements ]
     output = ""
 
-    output = "
+    xmlstring = "
       <question type=\"cloze\">
         <name>
           <text>"*question.title*"</text>
@@ -115,10 +109,20 @@ function QuestionToXML(  question :: VF_CLOZE_question )
           </generalfeedback>
           <penalty>0.3333333</penalty>
           <hidden>0</hidden>
-          <idnumber></idnumber>
-        </question>"
+          <idnumber></idnumber>"
+
+          if length( question.tags ) > 0  
+            xmlstring *= "<tags>\n"
+            for tag in question.tags 
+                xmlstring *= "<tag>\n<text>"*tag*"</text>\n</tag>\n"
+            end 
+            xmlstring *= "</tags>\n"
+        end
+
+    # end of question
+    xmlstring *= "</question>\n" 
     
-    return output
+    return xmlstring
 end
 
 
