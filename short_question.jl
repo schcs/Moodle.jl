@@ -14,6 +14,8 @@ struct short_answer_question
     defgrade::Int64                 # required by Moodle, usually 1
 end 
 
+
+
 # the following function creates short_answer_question from the first 
 # three attributes -- the others will take the default value
 
