@@ -4,7 +4,7 @@
 @doc """
 The data structure to hold a short answer type Moodle question
 """ ->
-
+ 
 struct short_answer_question
     title::String                   # the title of the question
     text::String                    # the text of the question
