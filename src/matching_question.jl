@@ -22,8 +22,6 @@ end
 
 function matching_question( title, text, subquestions; defgrade = 1, penalty = 0.1, shuffle = true, tags = [] )
     
-    println( "1111" )
-
     return matching_question( title, text, subquestions, defgrade, penalty, shuffle, tags )
 end 
 

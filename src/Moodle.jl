@@ -21,9 +21,6 @@ include( current_dir*"/multiple_choice.jl" )
 include( current_dir*"/quiz.jl" )
 include( current_dir*"/auxfunctions.jl" )
 
-
 end #Module
-
-
 
 
