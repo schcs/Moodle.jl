@@ -1,6 +1,10 @@
 # this file contains the functions related to 
 # multiple choice questions
 
+export multiple_choice_question,
+        multiple_choice_question_by_function, 
+        multiple_choice_question_by_lists
+
 @doc """
 The data structure to hold a multiple choice type Moodle question
 """ ->

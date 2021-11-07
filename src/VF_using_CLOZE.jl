@@ -1,9 +1,7 @@
-
-
-
 # this file contains the functions related to questions
 # of V/F type using the CLOZE type question of Moodle
 
+export VF_CLOZE_question
 
 # THIS ISN'T DONE YET:
 @doc """

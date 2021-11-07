@@ -4,6 +4,8 @@
 # this file contains the functions related to questions
 # of type matching
 
+export matching_question
+
 @doc """
 The data structure to hold a matching type Moodle question
 """ ->
