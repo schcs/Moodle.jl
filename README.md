@@ -2,4 +2,4 @@
 
 A Julia package to create questions for Moodle
 
-[Documentation](https://schcs.github.io/Moodle.jl/build/)
+[Documentation](https://schcs.github.io/Moodle.jl/docs/build/)
