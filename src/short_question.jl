@@ -1,8 +1,6 @@
 # this file contains the functions related to questions
 # of type shortanswer
 
-export short_answer_question
-
 @doc """
 The data structure to hold a short answer type Moodle question
 """ ->

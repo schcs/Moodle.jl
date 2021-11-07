@@ -1,10 +1,5 @@
-
-
-
 # this file contains the functions related to questions
 # of type matching
-
-export matching_question
 
 @doc """
 The data structure to hold a matching type Moodle question
@@ -27,6 +22,8 @@ end
 
 function matching_question( title, text, subquestions; defgrade = 1, penalty = 0.1, shuffle = true, tags = [] )
     
+    println( "1111" )
+
     return matching_question( title, text, subquestions, defgrade, penalty, shuffle, tags )
 end 
 
