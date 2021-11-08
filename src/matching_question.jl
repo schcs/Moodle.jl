@@ -1,6 +1,3 @@
-
-
-
 # this file contains the functions related to questions
 # of type matching
 

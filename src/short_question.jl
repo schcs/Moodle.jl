@@ -21,8 +21,9 @@ end
 
 function short_answer_question( title, text, answer; 
                         penalty = 0.1, tags = [], defgrade = 1 )
-    
-    return short_answer_question( title, text, answer, penalty, tags, defgrade )
+
+    return short_answer_question( title, text, answer, penalty, 
+                                    tags, defgrade )
 end 
 
 @doc """ 
