@@ -34,9 +34,9 @@ function MoodleSubQuestion( QApair :: Vector )
     if question != "" 
 
         text = "<subquestion format=\"html\">\n"* 
-                "<text><![CDATA[<p>\\("*
+                "<text><![CDATA[<p>"*
                 moodle_latex_form(question) *
-                "\\)</p>]]></text>\n"*
+                "</p>]]></text>\n"*
                 "<answer><text>"*  string(answer) * "</text></answer>\n"* 
                 "</subquestion>\n"
     else 
