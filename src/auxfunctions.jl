@@ -1,17 +1,5 @@
 # using LinearAlgebra
 
-# if arg is a string then we want to inser it in the Moodle form as is. 
-# if arg is a math object than we want to insert it in LaTeX
-# this function will make this conversion
-
-function moodle_latex_form( arg::Any )
-    if typeof( arg ) == String 
-        return arg
-    else
-        return "\\("*latex_form( arg )*"\\)"
-    end
-end
-
 
 # IntZeroMat(m,n) gives an mxn integer 0 matrix
 function IntZeroMat(m :: Int64, n :: Int64)
@@ -44,3 +32,35 @@ end
 function QApairs( ListOfAnswers::Tuple , func )
     return [ [x,func(x)] for x in ListOfAnswers ]
 end
+
+
+function moodle_string( str )
+
+    if !isa( str, AbstractString ) && !isa( str, Expr ) && 
+        !isa( str, Symbol )
+        str = "\\($(latex_form( str ))\\)"
+    end 
+
+    if isa( str, Expr ) || isa( str, Symbol )
+        str = latexstring( str )
+    end
+
+    if typeof( str ) == LaTeXString
+        str = str.s
+    end
+
+    dm_string = "\\["
+    while typeof( findfirst( "\$\$", str )) != Nothing 
+        str = replace( str, "\$\$" => dm_string, count = 1 )
+        dm_string = dm_string == "\\[" ? "\\]" : "\\["
+    end
+
+    m_string = "\\("
+    while typeof( findfirst( "\$", str )) != Nothing 
+        str = replace( str, "\$" => m_string, count = 1 )
+        m_string = m_string == "\\(" ? "\\)" : "\\("
+    end
+
+    return str
+end
+
