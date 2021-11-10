@@ -1,6 +1,6 @@
 # Inside make.jl
-push!(LOAD_PATH,"../")
-include( "/home/csaba/Projects/Moodle/src/main.jl" )
+push!(LOAD_PATH, (@__DIR__)*"/../src" )
+include( (@__DIR__)*"/../src/main.jl" )
 using Documenter
 makedocs(
          sitename = "Moodle.jl",

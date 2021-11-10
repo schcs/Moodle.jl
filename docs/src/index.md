@@ -26,7 +26,7 @@ The question is created by typing "matching_question( title, text, subquestions)
 
 For example:
 ```@repl
-include( "/home/csaba/Projects/Moodle.jl/main.jl" ) #
+include( (@__DIR__)*"/../../src/main.jl" ) #
 import LinearAlgebra
 title = "Find Determinant"; 
 text = "Match each of the following matrices with its determinant";
