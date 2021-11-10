@@ -26,8 +26,8 @@ The question is created by typing "matching_question( title, text, subquestions)
 
 For example:
 ```@repl
-include( (@__DIR__)*"/../../src/main.jl" ) #
-import LinearAlgebra #
+include( (@__DIR__)*"/../../src/main.jl" ) #hide
+import LinearAlgebra #hide
 title = "Find Determinant"; 
 text = "Match each of the following matrices with its determinant";
 subquestions = [ 
@@ -40,4 +40,5 @@ q = matching_question( title, text, subquestions )
 q
 ```
 Importing the output to the moodle using [SECTION DESCRIBING HOW TO DO THIS], the following question is produced:
+
 ![question](../img/MatchingExample.jpeg)
