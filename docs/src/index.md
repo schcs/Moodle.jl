@@ -27,7 +27,7 @@ The question is created by typing "matching_question( title, text, subquestions)
 For example:
 ```@repl
 include( (@__DIR__)*"/../../src/main.jl" ) #
-import LinearAlgebra
+import LinearAlgebra #
 title = "Find Determinant"; 
 text = "Match each of the following matrices with its determinant";
 subquestions = [ 
