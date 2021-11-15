@@ -1,4 +1,4 @@
-using LatexPrint, StatsBase, LinearAlgebra
+using LatexPrint, StatsBase, LinearAlgebra, LaTeXStrings
 current_dir = @__DIR__
 
 include( current_dir*"/short_question.jl" )
