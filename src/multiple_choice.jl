@@ -29,11 +29,11 @@ function multiple_choice_question( title, text, answers;
                                     wrongmarkzero = false )
     
     # the following is the list of valid marks in Moodle
-    validmarks = [ 100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333, 
-                    30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5, 0, 
-                    -100, -90, -83.33333, -80, -75, -70, -66.66667, -60, -50, 
-                    -40, -33.33333, -30, -25, -20, -16.66667, -14.28571, -12.5, 
-                    -11.11111, -10, -5 ]    
+    validmarks = [ 100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 
+            40, 33.33333, 30, 25, 20, 16.66667, 14.28571, 12.5, 
+            11.11111, 10, 5, 0, -100, -90, -83.33333, -80, -75, 
+            -70, -66.66667, -60, -50, -40, -33.33333, -30, -25, 
+            -20, -16.66667, -14.28571, -12.5, -11.11111, -10, -5 ]    
 
     answers = Array{Tuple{Any,Real}}(answers)
 
@@ -103,8 +103,10 @@ function multiple_choice_question( title, text, answers;
         answers[i] = (answers[i][1], default_wrongmark)
     end
 
-    return multiple_choice_question( title, text, answers, penalty, 
-                                    tags, defgrade, single, shuffle, wrongmarkzero )
+    return multiple_choice_question( moodle_string( title ), 
+                            moodle_string( text ), 
+                            answers, penalty, tags, defgrade, 
+                            single, shuffle, wrongmarkzero )
 end 
 
 # in the following function we can create multiple choice question specifying the 
@@ -152,7 +154,7 @@ end
 function moodle_answer( answer, value )
 
     text = "<answer fraction=\""*string( value )*"\" format=\"html\">\n"* 
-            "<text><![CDATA[<p>"*moodle_latex_form( answer )*
+            "<text><![CDATA[<p>"*moodle_string( answer )*
             "</p>]]></text>\n</answer>\n"
 
     return text

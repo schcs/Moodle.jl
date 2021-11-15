@@ -22,8 +22,10 @@ end
 function short_answer_question( title, text, answer; 
                         penalty = 0.1, tags = [], defgrade = 1 )
 
-    return short_answer_question( title, text, answer, penalty, 
-                                    tags, defgrade )
+    return short_answer_question( 
+        moodle_string( title ), 
+        moodle_string( text ), 
+        answer, penalty, tags, defgrade )
 end 
 
 @doc """ 
@@ -68,7 +70,8 @@ function ShortAnswerQuestion( title::String,
             text::String, mobj::Tuple, func )::short_answer_question
 
     for i in 1:length(mobj)
-        text = replace( text, "[["*string(i)*"]]" => latex_form( mobj[i] ))
+        text = replace( text, "[["*string(i)*"]]" => 
+                            latex_form( mobj[i] ))
     end 
     
     result = func( mobj... )

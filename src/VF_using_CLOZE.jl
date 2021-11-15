@@ -18,7 +18,8 @@ end
 # most basic implementation, with initial text "Para cada das seguintes afirmações, decida se ela é verdadeira ou falsa:"
 function VF_CLOZE_question( title, initial_text, list_of_statements ; tags = [] )
     
-    return VF_CLOZE_question( title, initial_text, list_of_statements, tags )
+    return VF_CLOZE_question( moodle_string( title ), 
+              moodle_string( initial_text ), list_of_statements, tags )
 end 
 
 
@@ -87,7 +88,7 @@ function QuestionToXML(  question :: VF_CLOZE_question )
     local i :: Int64, XMLversion :: Vector,  output :: String
 
 
-    XMLversion = [ "\n<p dir=\"ltr\"><br><br></p><p dir=\"ltr\"></p><p dir=\"ltr\">\n"*TF_Question_For_CLOZE_In_XML( i[1], i[2] ) for i in question.list_of_statements ]
+    XMLversion = [ "\n<p dir=\"ltr\"><br><br></p><p dir=\"ltr\"></p><p dir=\"ltr\">\n"*TF_Question_For_CLOZE_In_XML( moodle_string( i[1] ), i[2] ) for i in question.list_of_statements ]
     output = ""
 
     xmlstring = "
