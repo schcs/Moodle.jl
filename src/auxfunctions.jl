@@ -33,6 +33,16 @@ function QApairs( ListOfAnswers::Tuple , func )
     return [ [x,func(x)] for x in ListOfAnswers ]
 end
 
+#=
+
+function moodle_latex_form( arg::Any )
+    if typeof( arg ) == String 
+        return arg
+    else
+        return "\\("*latex_form( arg )*"\\)"
+    end
+end
+=#
 
 function moodle_string( str )
 
@@ -55,11 +65,20 @@ function moodle_string( str )
         dm_string = dm_string == "\\[" ? "\\]" : "\\["
     end
 
+    if dm_string == "\\[" 
+        throw( "Something wrong with display math mode." )
+    end
+
     m_string = "\\("
-    while typeof( findfirst( "\$", str )) != Nothing 
+    while typeof( findfirst( "\$", str )) != Nothing
         str = replace( str, "\$" => m_string, count = 1 )
         m_string = m_string == "\\(" ? "\\)" : "\\("
     end
+
+    if m_string == "\\)"
+        throw( "Something wrong with math mode." )
+    end
+
 
     return str
 end
