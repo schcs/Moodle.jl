@@ -65,7 +65,7 @@ function moodle_string( str )
         dm_string = dm_string == "\\[" ? "\\]" : "\\["
     end
 
-    if dm_string == "\\[" 
+    if dm_string == "\\]" 
         throw( "Something wrong with display math mode." )
     end
 
