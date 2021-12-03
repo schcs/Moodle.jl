@@ -10,7 +10,8 @@ export matching_question,
         multiple_choice_question_by_lists,
         MoodleQuizToFile,
         short_answer_question,
-        VF_CLOZE_question
+        VF_CLOZE_question,
+        essay_question
 
 current_dir = @__DIR__
 
@@ -20,6 +21,8 @@ include( current_dir*"/VF_using_CLOZE.jl" )
 include( current_dir*"/multiple_choice.jl" )
 include( current_dir*"/quiz.jl" )
 include( current_dir*"/auxfunctions.jl" )
+include( current_dir*"/essay.jl" )
+
 
 end #Module
 
