@@ -88,7 +88,7 @@ end
 Paris).~*#Wrong answer. The capital of France is Paris, of course.}
 =#
 
-function cloze_question( title::String, text::String, subquestions::Vector{cloze_subquestion}; defgrade = 1, penalty = 1, tags = [] )
+function cloze_question( title::AbstractString, text::AbstractString, subquestions::Vector{cloze_subquestion}; defgrade = 1, penalty = 1, tags = [] )
 
     for q in subquestions
         for i in 1:length( q.answers )
@@ -103,9 +103,7 @@ end
 
 function cloze_subquestion_to_string( sq::cloze_subquestion )
 
-    istrue(x) = x == 100 || ( isa( x, Bool ) && x == true )
     val( x ) = isa( x, Bool ) ? ( x ? 100 : 0 ) : x 
-
 
     str = "{$(sq.grade):$(sq.type):"
     for ans in sq.answers

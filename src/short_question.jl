@@ -82,6 +82,37 @@ end
 converts short answer type question to XML string
 """ ->
 
+function ShortAnswerQuestion( title::String, text::AbstractString, 
+                                params::Vector, func; 
+                                sep_left = "[[", sep_right = "]]", 
+                                sample_size = -1 )::Vector{short_answer_question}
+
+    if length( params ) == 0 || length( params ) < sample_size 
+        throw( "there aren't enough entries in paramenter set" )
+    end 
+
+    if sample_size != -1  
+        params = sample( params, sample_size, replace = false )
+    end 
+
+    nr_params = length(params[1])
+    questions = short_answer_question[]
+
+    for par in params
+        new_text = text 
+        for k in 1:nr_params 
+            place = sep_left*string(k)*sep_right
+            new_text = replace( new_text, place => string(par[k]))
+        end
+        push!( questions, short_answer_question( title, new_text, func(par...))) 
+    end 
+
+    return questions
+end 
+
+
+
+
 function QuestionToXML( question::short_answer_question )
    
     xmlstring = "<question type=\"shortanswer\">\n<name format=\"html\">\n"*
