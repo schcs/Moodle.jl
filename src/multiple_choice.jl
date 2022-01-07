@@ -6,8 +6,8 @@ The data structure to hold a multiple choice type Moodle question
 """ ->
 
 struct multiple_choice_question
-    title::String                   # the title of the question
-    text::String                    # the text of the question
+    title::AbstractString                   # the title of the question
+    text::AbstractString                    # the text of the question
     answers::Vector{Tuple}          # the answers
     penalty::Float64                # required by Moodle, it's usually 0.1
     tags::Vector{String}            # list of tags
@@ -103,8 +103,8 @@ function multiple_choice_question( title, text, answers;
         answers[i] = (answers[i][1], default_wrongmark)
     end
 
-    return multiple_choice_question( moodle_string( title ), 
-                            moodle_string( text ), 
+    return multiple_choice_question( title, 
+                            text, 
                             answers, penalty, tags, defgrade, 
                             single, shuffle, wrongmarkzero )
 end 
@@ -143,6 +143,17 @@ function multiple_choice_question_by_function( title, text, answers, func;
         tags, defgrade, single, shuffle, wrongmarkzero )
 end 
 
+function MultipleChoiceQuestion( title::AbstractString, text::AbstractString, param::Tuple, 
+    func; sep_left = "[[", sep_right = "]]", tags = [] )::multiple_choice_question
+
+    text = substitute_latex_string( text, param, sep_left = sep_left, sep_right = sep_right ) 
+    answers::Vector{Any} = [( param[end][k], 
+            func( Tuple( vcat( [ x for x in param[1:end-1]], param[end][k]))...)) 
+            for k in 1:length(param[end])]
+
+
+    return multiple_choice_question( title, text, answers, tags = tags ) 
+end 
 
 function Base.show( io::IO, q::multiple_choice_question )  
         print(io, "Multiple choice question\n\tTitle: ", q.title, 
@@ -160,14 +171,22 @@ function moodle_answer( answer, value )
     return text
 end
 
+function write_latex( q::multiple_choice_question ) 
+    latex_answers = prod( string( k[1] )*"\\ \\rightarrow\\ "*string( k[2] )*";\\ \\ " 
+            for k in q.answers )  
+    L"{\bf Title:} %$(q.title)\\\smallskip\\{\bf Type:} Multiple Choice\\\smallskip\\{\bf Text:} %$(q.text)\\\smallskip\\{\bf Answers: }%$(latex_answers)"
+end 
+
+show_pdf( q::multiple_choice_question ) = render( write_latex( q ), MIME( "application/pdf" ))
+
 
 function QuestionToXML( question::multiple_choice_question )
    
     xmltext = "<question type=\"multichoice\">\n<name format=\"html\">\n"*
-            "<text><![CDATA["*question.title*"]]></text>\n"*
+            "<text><![CDATA["*moodle_string( question.title )*"]]></text>\n"*
             "</name>\n"*
             "<questiontext format=\"html\">\n"*
-            "<text><![CDATA[<p>"*question.text*"</p>]]></text>\n"*
+            "<text><![CDATA[<p>"*moodle_string( question.text )*"</p>]]></text>\n"*
             "</questiontext>\n"*
             "<defaultgrade>"*string( question.defgrade )*"</defaultgrade>\n"* 
             "<generalfeedback format=\"html\"><text/></generalfeedback>\n"*

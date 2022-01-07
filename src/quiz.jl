@@ -2,11 +2,12 @@
 
 # MoodleQuestion is an abstract type defined as the union of all question types
 # at the moment only one question type is defined
-
+ 
 MoodleQuestion = Union{short_answer_question, 
                              matching_question, 
                              multiple_choice_question,
-                             VF_CLOZE_question} 
+                             VF_CLOZE_question}
+
 
 ```@doc 
 The data sructure that holds a quiz
@@ -53,4 +54,8 @@ function MoodleQuizToFile( category, questions, filename )
     return Nothing
 end
 
+write_latex( qq::Vector ) = 
+    LaTeXString( prod( L"{\bf Question %$k}\\\smallskip\\%$(write_latex( qq[k] ))\\\bigskip\\=======\bigskip\\\\\ " for k in 1:length(qq)))
+
+show_pdf( q::Vector ) = render( write_latex( q ), MIME( "application/pdf" ))
                                     

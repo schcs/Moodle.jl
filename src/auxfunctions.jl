@@ -83,3 +83,21 @@ function moodle_string( str )
     return str
 end
 
+function substitute_latex_string( text::AbstractString, param::Tuple; 
+        sep_left = "[[", sep_right = "]]" )::AbstractString
+    
+    text_is_latex_string = text isa LaTeXString 
+
+    for k in 1:length(param)
+        place = sep_left*string(k)*sep_right
+        text = replace( text, place => string(param[k]))
+        if text_is_latex_string 
+            text = LaTeXString( text )
+        end     
+    end
+
+    if text_is_latex_string 
+            text = LaTeXString( text )
+    end 
+    return text
+end 

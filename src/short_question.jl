@@ -6,12 +6,12 @@ The data structure to hold a short answer type Moodle question
 """ ->
  
 struct short_answer_question
-    title::String                   # the title of the question
-    text::String                    # the text of the question
-    answer::Union{String,Number}    # the right answer
-    penalty::Float64                # required by Moodle, it's usually 0.1
-    tags::Vector{String}            # list of tags
-    defgrade::Int64                 # required by Moodle, usually 1
+    title::AbstractString                   # the title of the question
+    text::AbstractString                    # the text of the question
+    answer::Union{String,Number}            # the right answer
+    penalty::Float64                        # required by Moodle, it's usually 0.1
+    tags::Vector{String}                    # list of tags
+    defgrade::Int64                         # required by Moodle, usually 1
 end 
 
 
@@ -22,10 +22,7 @@ end
 function short_answer_question( title, text, answer; 
                         penalty = 0.1, tags = [], defgrade = 1 )
 
-    return short_answer_question( 
-        moodle_string( title ), 
-        moodle_string( text ), 
-        answer, penalty, tags, defgrade )
+    return short_answer_question( title, text, answer, penalty, tags, defgrade )
 end 
 
 @doc """ 
@@ -38,6 +35,7 @@ function Base.show( io::IO, q::short_answer_question )
                 "\n\tAnswer: ", q.answer  )
 end
 
+#=
 @doc """
 Creates short answer question with title. The text of the question is text in which 
 [[i]] is replaced by the latex form of the i-th entry in mobj. The answer is obtained
@@ -66,60 +64,32 @@ Short answer question
 
 """ ->
  
-function ShortAnswerQuestion( title::String, 
-            text::String, mobj::Tuple, func )::short_answer_question
-
-    for i in 1:length(mobj)
-        text = replace( text, "[["*string(i)*"]]" => 
-                            latex_form( mobj[i] ))
-    end 
-    
-    result = func( mobj... )
-    return short_answer_question( title, text, string( result ))
-end
-
 @doc """
 converts short answer type question to XML string
 """ ->
-
+=#
 function ShortAnswerQuestion( title::String, text::AbstractString, 
-                                params::Vector, func; 
+                                param::Tuple, func; 
                                 sep_left = "[[", sep_right = "]]", 
-                                sample_size = -1, tags = [] )::Vector{short_answer_question}
+                                tags = [] )::short_answer_question
 
-    if length( params ) == 0 || length( params ) < sample_size 
-        throw( "there aren't enough entries in paramenter set" )
-    end 
-
-    if sample_size != -1  
-        params = sample( params, sample_size, replace = false )
-    end 
-
-    nr_params = length(params[1])
-    questions = short_answer_question[]
-
-    for par in params
-        new_text = text 
-        for k in 1:nr_params 
-            place = sep_left*string(k)*sep_right
-            new_text = replace( new_text, place => string(par[k]))
-        end
-        push!( questions, short_answer_question( title, new_text, func(par...), tags = tags )) 
-    end 
-
-    return questions
+    text = substitute_latex_string( text, param, sep_left = sep_left, sep_right = sep_right )
+    return short_answer_question( title, text, func(param...), tags = tags ) 
 end 
 
 
+write_latex( q::short_answer_question ) =  
+    L"{\bf Title:} %$(q.title)\\\smallskip\\{\bf Type:} Short Answer\\\smallskip\\{\bf Text:} %$(q.text)\\\smallskip\\{\bf Answer: }%$(q.answer)"
 
+show_pdf( q::short_answer_question ) = render( write_latex( q ), MIME( "application/pdf" ))
 
 function QuestionToXML( question::short_answer_question )
    
     xmlstring = "<question type=\"shortanswer\">\n<name format=\"html\">\n"*
-            "<text><![CDATA["*question.title*"]]></text>\n"*
+            "<text><![CDATA["*moodle_string( question.title )*"]]></text>\n"*
             "</name>\n"*
             "<questiontext format=\"html\">\n"*
-            "<text><![CDATA[<p>"*question.text*"</p>]]></text>\n"*
+            "<text><![CDATA[<p>"*moodle_string( question.text )*"</p>]]></text>\n"*
             "</questiontext>\n"*
             "<defaultgrade>"*string( question.defgrade )*"</defaultgrade>\n"* 
             "<generalfeedback format=\"html\"><text/></generalfeedback>\n"*
