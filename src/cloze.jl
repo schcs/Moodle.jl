@@ -108,8 +108,10 @@ function cloze_subquestion_to_string( sq::cloze_subquestion )
     str = "{$(sq.grade):$(sq.type):"
     for k in 1:length(sq.answers)
         ans1 = sq.answers[k][1]
-        ans1 = replace( ans1, "{" => "&#123;" )
-        ans1 = replace( ans1, "}" => "&#125;" )
+        if ans1 isa String
+            ans1 = replace( ans1, "{" => "&#123;" )
+            ans1 = replace( ans1, "}" => "&#125;" )
+        end
         ans = ( ans1, sq.answers[k][2] )
         str *= "%$(val(ans[2]))%$(ans[1])$( sq.type == "NM" ? ":$(ans[3])" : "")~"
     end
