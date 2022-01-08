@@ -54,7 +54,7 @@ function MatchingQuestion( title::AbstractString, text::AbstractString, param::T
 end 
 
 function write_latex( q::matching_question ) 
-    latex_answers = prod( (k[1] == "" ? "Nothing" : string( k[1] ))*"\\ \\rightarrow\\ "*string( k[2] )*";\\ \\ " for k in q.subquestions )  
+    latex_answers = prod( (k[1] == "" ? "Nothing" : string( k[1] ))*"\\ \$\\rightarrow\$ "*string( k[2] )*";\\ \\ " for k in q.subquestions )  
     L"{\bf Title:} %$(q.title)\\\smallskip\\{\bf Type:} Matching\\\smallskip\\{\bf Text:} %$(q.text)\\\smallskip\\{\bf Answers: }%$(latex_answers)"
 end 
 

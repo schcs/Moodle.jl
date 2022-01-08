@@ -30,9 +30,13 @@ Show function to short_answer_question
 """
 
 function Base.show( io::IO, q::short_answer_question )  
-        print(io, "Short answer question\n\tTitle: ", q.title, 
+        print( "Short answer question\n\tTitle: ", q.title, 
                 "\n\tText: ", q.text[1:min(length(q.text),20)]*"...", 
                 "\n\tAnswer: ", q.answer  )
+end
+
+function Base.display( q::short_answer_question )  
+    print( LaTeXString( write_latex( q )))
 end
 
 #=

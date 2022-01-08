@@ -55,7 +55,7 @@ function MoodleQuizToFile( category, questions, filename )
 end
 
 write_latex( qq::Vector ) = 
-    LaTeXString( prod( L"{\bf Question %$k}\\\smallskip\\%$(write_latex( qq[k] ))\\\bigskip\\=======\bigskip\\\\\ " for k in 1:length(qq)))
+    LaTeXString( prod( L"{\bf Question %$k}\\\smallskip\\%$(write_latex( qq[k] ))%$(\"\n\")\bigskip\\=======\bigskip%$(\"\n\n\")" for k in 1:length(qq)))
 
 show_pdf( q::Vector ) = render( write_latex( q ), MIME( "application/pdf" ))
                                     
