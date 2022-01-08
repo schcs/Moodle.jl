@@ -71,12 +71,12 @@ MRHS arranges {1:MRHS:=as~=a~=horizontal~list}
 struct cloze_subquestion
     type::String
     grade::UInt64
-    answers::Vector{Union{Tuple{Union{String,Number},Number},Tuple{Union{String,Number},Number,Number}}}
+    answers::Vector{Union{Tuple{Union{AbstractString,Number},Number},Tuple{Union{AbstractString,Number},Number,Number}}}
 end 
 
 struct cloze_question 
         title::String                       # the title of the question
-        text::String                        # the text of the question
+        text::AbstractString                        # the text of the question
         subquestions::Vector{cloze_subquestion}  # the answers
         defgrade::Int64                     # defgrade
         penalty::Float64                    # required by Moodle, it's usually 0.1
@@ -92,13 +92,13 @@ function cloze_question( title::AbstractString, text::AbstractString, subquestio
 
     for q in subquestions
         for i in 1:length( q.answers )
-            if isa( q.answers[i][1], String )
-                q.answers[i] = ( moodle_string( q.answers[i][1] ), q.answers[i][2] )
+            if isa( q.answers[i][1], AbstractString )
+                q.answers[i] = ( q.answers[i][1], q.answers[i][2] )
             end
         end
     end 
 
-    return cloze_question( moodle_string( title ), moodle_string( text ), subquestions, defgrade, penalty, tags )
+    return cloze_question( title, text, subquestions, defgrade, penalty, tags )
 end
 
 function cloze_subquestion_to_string( sq::cloze_subquestion )
@@ -108,7 +108,8 @@ function cloze_subquestion_to_string( sq::cloze_subquestion )
     str = "{$(sq.grade):$(sq.type):"
     for k in 1:length(sq.answers)
         ans1 = sq.answers[k][1]
-        if ans1 isa String
+        if ans1 isa AbstractString
+            ans1 = moodle_string( ans1 )
             ans1 = replace( ans1, "{" => "&#123;" )
             ans1 = replace( ans1, "}" => "&#125;" )
         end
@@ -122,7 +123,7 @@ end
 
 function QuestionToXML( question::cloze_question )
 
-    qtext = question.text
+    qtext = moodle_string( question.text )
     
     i = 1
     while true
@@ -135,7 +136,7 @@ function QuestionToXML( question::cloze_question )
     end
 
     xmltext = "<question type=\"cloze\">\n<name format=\"html\">\n"*
-            "<text><![CDATA[$(question.title)]]></text>\n"*
+            "<text><![CDATA[$(moodle_string( question.title ))]]></text>\n"*
             "</name>\n"*
             "<questiontext format=\"html\">\n"*
             "<text><![CDATA[<p>$(qtext)</p>]]></text>\n"*
