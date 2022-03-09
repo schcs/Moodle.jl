@@ -11,7 +11,11 @@ Currently the package can be used to create the following types of questions:
 - [essay questions](essay.md);
 
 ## Installing the package
-Will write here how to install the package once it's written as a module.
+The package can be installed and activated by typing 
+```@repl
+ import Pkg; Pkg.add( url="https://github.com/schcs/Moodle.jl.git" )
+ using Moodle
+```
 
 
 ## Creating a Moodle quiz
