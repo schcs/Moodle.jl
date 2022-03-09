@@ -113,8 +113,8 @@ The simplest way to create a cloze question is to create the subquestions first 
 q = cloze_question( "Even numbers", "Mark the even numbers from the following list {{1}}. How many numbers did you mark? {{2}}", [ s2, s1 ] )
 ```
 
-The line above combines the two subquestions `s1` and `s2` into a single close type question.
-
+The line above combines the two subquestions `s1` and `s2` into a single close type question. The two subquestions appear in the place of `{{1}}` and `{{2}}`.
+ 
 One may supply the optional arguments `defgrade`, `penalty` (see the Moodle system documentation) and `tags`; the latter is an array of strings specifying the tags that appear with the question on Moodle.
 """ ->
 

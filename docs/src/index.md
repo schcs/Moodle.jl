@@ -10,10 +10,10 @@
 ## Package Features
 Currently the package can be used to create the following types of questions:
 - [short answer questions](short_answer.md);
-- [matching question](matching);
 - [multiple choice questions](multiple_choice.md);
+- [matching questions](matching);
 - [cloze questions](cloze.md);
-- [essay questions](essay.md);
+- [essay questions](essay.md).
 
 ## Installing the package
 The package can be installed and activated by typing 
@@ -32,6 +32,8 @@ using LaTeXStrings
 q1 = short_answer_question( "Question 1", L"What is the sum of $2$ and $-3$?", -1 );
 q2 = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [(0,true),(-1,false),(2,true)])
 ```
+
+(See the documentation of `short_answer_question` and `multiple_choice_question` for the specifics of these types.)
 
 Then we write the array of these two questions into an XML file as follows.
 

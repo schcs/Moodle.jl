@@ -39,7 +39,7 @@ This parametric form can be used to create a large number of questions that corr
 params = [ (a,b,(b,b+1,b+2,b+3,b+4)) for b in 10:20 for a in 1:4 ]
 q = [ multiple_choice_question( "Divisible numbers", L"Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", par, (x,y,z) -> z % y == x ) for par in params ]
 ```
-In each of these versions, the function multiple_choice_question has the following optional arguments:
+In each of these versions, the function `multiple_choice_question` has the following optional arguments:
 - penalty: see the Moodle system for documentation;
 - tags: array of strings specifying the tags that appear on Moodle after import;
 - defgrade: see the Moodle system for documentation;

@@ -21,9 +21,9 @@ q = matching_question( "Additive inverse", "Match each number with its additive 
 
 This line creates a question that is asking for matching the numbers 3, 4, 5 with their additive inverse modulo 10. The inverses are calculated by the function given as the fourth argument. The tuple (1,2,3) contains the list of answers that do not correspond to any of the listed options in the matching question. This last entry can be omitted and in this case each answer corresponds to an option in the first list. A check is performed to make sure that the dummy options do not in fact appear among the right answers. 
 
-This second form of the function is useful for creating lists of questions as was explaned in the documentation of short_answer_question and multiple_choice_question.
+This second form of the function is useful for creating lists of questions as was explaned in the documentation of `short_answer_question` and `multiple_choice_question`.
 
-Both methods accept the optional arguments penalty, defgrade and shuffle and tags. For the meaning of penalty and defgrade, consult the documentation of Moodle. The argument tags is a list of strings that will appear as tags for the question once imported from Moodle. The argument shuffle is true or false and indicates whether the options need to appear in a random shuffle.
+Both methods accept the optional arguments penalty, defgrade, shuffle and tags. For the meaning of penalty and defgrade, consult the documentation of Moodle. The argument tags is a list of strings that will appear as tags for the question once imported from Moodle. The argument shuffle is true or false and indicates whether the options need to appear in a random shuffle.
 
 The second version also accepts the optional argument `sep_left` and/or `sep_right` that are strings marking the beginning and the end of the placeholders. The default values are "[[" and "]]", but these can be changed if the user needs these characters for other purposes. 
 
