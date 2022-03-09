@@ -44,7 +44,7 @@ function moodle_quiz_to_file( category, questions, filename )
 
     # write each question
     for q in questions
-        write( f, QuestionToXML( q ))
+        write( f, question_to_xml( q ))
     end
 
     # end of quiz
