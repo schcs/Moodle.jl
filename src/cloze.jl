@@ -101,9 +101,21 @@ function cloze_question( title::AbstractString, text::AbstractString, subquestio
     return cloze_question( title, text, subquestions, defgrade, penalty, tags )
 end
 
+function ClozeQuestion( title::AbstractString, text::AbstractString, 
+            subquestions::Vector, params; 
+            defgrade = 1, penalty = 1, tags = [], sep_left = "[[", sep_right = "]]" )
+    
+    text = substitute_latex_string( text, params, sep_left = sep_left, sep_right = sep_right )
+    subquestions = [ Tuple( k == 1 ? substitute_latex_string( q[k], tuple ) : q[k] 
+                    for k in 1:length( q )) for q in subquestions ]
+
+    return cloze_question( title, text, subquestions, 
+                defgrade == defgrade, penalty == penalty, tags = tags ) 
+end 
+
 function cloze_subquestion_to_string( sq::cloze_subquestion )
 
-    val( x ) = isa( x, Bool ) ? ( x ? 100 : 0 ) : x 
+    val( x ) = x isa Bool ? ( x ? 100 : 0 ) : x 
 
     str = "{$(sq.grade):$(sq.type):"
     for k in 1:length(sq.answers)
@@ -121,17 +133,42 @@ function cloze_subquestion_to_string( sq::cloze_subquestion )
     return str
 end
 
+function write_latex( sq::cloze_subquestion )
+    
+    types = Dict( "MC" => "Multuple Choice", "MCV" => "Multiple Choice Vertical", 
+                "MCH" => "Multuple Choice Horizontal", "SA" => "Short Answer", 
+                "NM" => "Numerical", "MCVS" => "Multichoice Vertical Radio Buttons" )
+
+    str = "\\\\\\smallskip\\\\{\\bf Subquestion type:} $(types[sq.type])\\\\\\smallskip\\\\"
+    for ans in sq.answers
+        str *= prod( string( u )*"\\hskip 1cm " for u in ans )*"\\\\\\smallskip\\\\"
+    end
+    return LaTeXString( str ) 
+end 
+
+function write_latex( q::cloze_question )
+
+    subquestions = write_latex.( q.subquestions )  
+    str = L"{\bf Title:} %$(q.title)\\\smallskip\\{\bf Type:} Cloze\\\smallskip\\{\bf Text:} %$(q.text)"
+    for i in 1:length( q.subquestions )
+        str = replace( str, "{{$i}}" => subquestions[i] )
+    end 
+    return LaTeXString( str ) 
+end 
+    
+show_pdf( q::cloze_question ) = render( write_latex( q ), MIME( "application/pdf" ))
+
 function QuestionToXML( question::cloze_question )
 
     qtext = moodle_string( question.text )
     
     i = 1
     while true
-        ff = findfirst( "[[$i]]", qtext )
+        ff = findfirst( "{{$i}}", qtext )
         if typeof( ff ) == Nothing    
             break
         end
-        qtext = replace( qtext, "[[$i]]" => cloze_subquestion_to_string( question.subquestions[i] ))
+        qtext = replace( qtext, "{{$i}}" => cloze_subquestion_to_string( question.subquestions[i]))
         i += 1
     end
 

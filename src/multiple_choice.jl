@@ -3,6 +3,50 @@
 
 @doc """
 The data structure to hold a multiple choice type Moodle question
+
+$(TYPEDEF)
+$(TYPEDFIELDS)
+
+There are several ways to create multiple choice questions. The following line creates a multiple choice question that asks the students to mark the even numbers among 0, -1, and 2.
+
+```@repl
+q = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [(0,true),(-1,false),(2,true)])
+```
+The same question can be created by specifying separately the list of right answers and the list of wrong answers as follows. 
+
+```@repl
+q = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [0,2], [-1] )
+```
+
+Alternatively, one might define this question by specifying the list of options and defining a boolean function that can be applied to these options and decides whether a certain option is right or wrong.
+
+```@repl
+q = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [0,2,-2], x -> x%2 == 0 )
+```
+
+Multiple choice questions can also be defined by using parameters. Consider, for example, the following line.
+
+```@repl
+q = multiple_choice_question( "Remainder", "Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", (2,4,(0,2,4,6,8,10)), (x,y,z) -> z % y == x )
+```
+
+This line creates a question asking which of the numbers 0, 2, 4, 6, 8, 10 give remainder 2 modulo 4. The first two arguments are the name of the question and the question text, respectively. The third argument is a tuple whose first two entries are substituted in the placeholders [[1]] and [[2]], while the third argument is itself a tuple containing the options that appear among the possible answers. The last argument is a boolean function with three arguments. This function is applied to the first two entries of the tuple and to each entry of the third entry to calculate which of the answers are correct.
+
+This parametric form can be used to create a large number of questions that correspond to a list of parameters. Take, for instance, the following example.
+
+
+```@repl
+params = [ (a,b,(b,b+1,b+2,b+3,b+4)) for b in 10:20 for a in 1:4 ]
+q = [ multiple_choice_question( "Divisible numbers", "Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", par, (x,y,z) -> z % y == x ) for par in params ]
+```
+In each of these versions, the function multiple_choice_question has the following optional arguments:
+- penalty: see the Moodle system for documentation;
+- tags: array of strings specifying the tags that appear on Moodle after import;
+- defgrade: see the Moodle system for documentation;
+- single: true or false; if true then there is only one correct answer and the options appear on Moodle with radio buttons;
+- shuffle: true or false; controls if the answers should or should not be shuffled;
+- wrongmarkzero: true or false; controls if marking an incorrect answer should result in the reduction of the mark recieved by the student. The default is true and the marks for the answers are calculated in such a way that the students receive zero marks if they click all the options, and also when they leave all the options unclicked. 
+
 """ ->
 
 struct multiple_choice_question
@@ -19,6 +63,12 @@ end
 
 # the following function creates multiple_choice_question from the first 
 # three attributes -- the others will take the default value
+
+@doc """
+Version 1:
+
+$(SIGNATURES)
+""" ->
 
 function multiple_choice_question( title, text, answers; 
                                     penalty = 0.1, 
@@ -112,13 +162,20 @@ end
 # in the following function we can create multiple choice question specifying the 
 # lists of right and wrong answers
 
-function multiple_choice_question_by_lists( title, text, rightanswers, wronganswers;  
+@doc """
+Version 2:
+
+$(SIGNATURES)
+""" ->
+
+function multiple_choice_question( title::AbstractString, text::AbstractString, 
+        rightanswers::Vector, wronganswers::Vector;  
     penalty = 0.1, 
     tags = [], 
     defgrade = 1, 
     single = false,
     shuffle = true, 
-    wrongmarkzero = false )
+    wrongmarkzero = false )::multiple_choice_question
 
     answers = [ (x,true) for x in rightanswers ]
     append!( answers, [ (x,false) for x in wronganswers ])
@@ -129,13 +186,20 @@ function multiple_choice_question_by_lists( title, text, rightanswers, wrongansw
         wrongmarkzero = wrongmarkzero )
 end 
 
-function multiple_choice_question_by_function( title, text, answers, func;  
+@doc """
+Version 3:
+
+$(SIGNATURES)
+""" ->
+
+function multiple_choice_question( title::AbstractString, text::AbstractString, 
+    answers::Vector, func::Function;  
     penalty = 0.1, 
     tags = [], 
     defgrade = 1, 
     single = false,
     shuffle = true, 
-    wrongmarkzero = false )
+    wrongmarkzero = false )::multiple_choice_question
 
     answers = [ (x,func( x )) for x in answers ]
 
@@ -143,8 +207,14 @@ function multiple_choice_question_by_function( title, text, answers, func;
         tags, defgrade, single, shuffle, wrongmarkzero )
 end 
 
-function MultipleChoiceQuestion( title::AbstractString, text::AbstractString, param::Tuple, 
-    func; sep_left = "[[", sep_right = "]]", tags = [] )::multiple_choice_question
+@doc """
+Version 4:
+
+$(SIGNATURES)
+""" ->
+
+function multiple_choice_question( title::AbstractString, text::AbstractString, param::Tuple, 
+    func; sep_left = "[[", sep_right = "]]", tags = [], single = false )::multiple_choice_question
 
     text = substitute_latex_string( text, param, sep_left = sep_left, sep_right = sep_right ) 
     answers::Vector{Any} = [( param[end][k], 
@@ -152,8 +222,10 @@ function MultipleChoiceQuestion( title::AbstractString, text::AbstractString, pa
             for k in 1:length(param[end])]
 
 
-    return multiple_choice_question( title, text, answers, tags = tags ) 
+    return multiple_choice_question( title, text, answers, tags = tags, single = false ) 
 end 
+
+
 
 function Base.show( io::IO, q::multiple_choice_question )  
         print(io, "Multiple choice question\n\tTitle: ", q.title, 
@@ -171,16 +243,33 @@ function moodle_answer( answer, value )
     return text
 end
 
+@doc """
+Writes a Moodle question into a LaTeX string.
+
+$(SIGNATURES)
+""" ->
+
 function write_latex( q::multiple_choice_question ) 
     latex_answers = prod( string( k[1] )*"\\ \\rightarrow\\ "*string( k[2] )*";\\ \\ " 
             for k in q.answers )  
     L"{\bf Title:} %$(q.title)\\\smallskip\\{\bf Type:} Multiple Choice\\\smallskip\\{\bf Text:} %$(q.text)\\\smallskip\\{\bf Answers: }%$(latex_answers)"
 end 
 
+@doc """
+Shows a question or a list of questions as a pdf document. Requires external LaTeX engines for proper functioning.
+
+$(SIGNATURES)
+""" ->
+
 show_pdf( q::multiple_choice_question ) = render( write_latex( q ), MIME( "application/pdf" ))
 
+@doc """ 
+    Writes a Moodle question into an XML string.
 
-function QuestionToXML( question::multiple_choice_question )
+$(SIGNATURES)
+""" ->
+
+function question_to_xml( question::multiple_choice_question )
    
     xmltext = "<question type=\"multichoice\">\n<name format=\"html\">\n"*
             "<text><![CDATA["*moodle_string( question.title )*"]]></text>\n"*

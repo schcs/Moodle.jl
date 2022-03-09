@@ -1,6 +1,6 @@
 # Inside make.jl
 push!(LOAD_PATH, (@__DIR__)*"/../src" )
-include( (@__DIR__)*"/../src/main.jl" )
+include( (@__DIR__)*"/../src/Moodle.jl" )
 using Documenter
 makedocs(
          sitename = "Moodle.jl",
