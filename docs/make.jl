@@ -15,6 +15,6 @@ makedocs(
 # for more information.
 
 deploydocs(
-    repo = "https://schcs.github.io/Moodle.jl/"
+    repo = "https://github.com/schcs/Moodle.jl"
 )
 
