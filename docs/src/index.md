@@ -44,4 +44,4 @@ q
 ```
 Importing the output to the moodle using [SECTION DESCRIBING HOW TO DO THIS], the following question is produced:
 
-![question](../img/MatchingExample.jpeg)
+<!-- ![question](../img/MatchingExample.jpeg) -->
