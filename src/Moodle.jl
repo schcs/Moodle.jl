@@ -2,7 +2,7 @@
 # it has to be included to use the functions
 module Moodle
 
-using StatsBase, LinearAlgebra, LaTeXStrings, Latexify, DocStringExtensions
+using StatsBase, LinearAlgebra, LaTeXStrings, Latexify, DocStringExtensions, LatexPrint
 
 export matching_question,
         multiple_choice_question,
