@@ -27,7 +27,7 @@ q = multiple_choice_question( "Even numbers", "Which of the following numbers ar
 Multiple choice questions can also be defined by using parameters. Consider, for example, the following line.
 
 ```@repl
-q = multiple_choice_question( "Remainder", "Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", (2,4,(0,2,4,6,8,10)), (x,y,z) -> z % y == x )
+q = multiple_choice_question( "Remainder", L"Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", (2,4,(0,2,4,6,8,10)), (x,y,z) -> z % y == x )
 ```
 
 This line creates a question asking which of the numbers 0, 2, 4, 6, 8, 10 give remainder 2 modulo 4. The first two arguments are the name of the question and the question text, respectively. The third argument is a tuple whose first two entries are substituted in the placeholders [[1]] and [[2]], while the third argument is itself a tuple containing the options that appear among the possible answers. The last argument is a boolean function with three arguments. This function is applied to the first two entries of the tuple and to each entry of the third entry to calculate which of the answers are correct.
@@ -37,7 +37,7 @@ This parametric form can be used to create a large number of questions that corr
 
 ```@repl
 params = [ (a,b,(b,b+1,b+2,b+3,b+4)) for b in 10:20 for a in 1:4 ]
-q = [ multiple_choice_question( "Divisible numbers", "Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", par, (x,y,z) -> z % y == x ) for par in params ]
+q = [ multiple_choice_question( "Divisible numbers", L"Mark the integers that give remainder \$[[1]]\$ modulo \$[[2]]\$.", par, (x,y,z) -> z % y == x ) for par in params ]
 ```
 In each of these versions, the function multiple_choice_question has the following optional arguments:
 - penalty: see the Moodle system for documentation;

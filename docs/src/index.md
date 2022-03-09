@@ -39,3 +39,5 @@ Then we write the array of these two questions into an XML file as follows.
 moodle_quiz_to_file( "Category A", [q1, q2], "questions.xml" )
 ```
 The first argument is the name of the category that will be used in the Moodle system. The last line creates the file `questions.xml` that can be imported from the Moodle system.
+
+Note that the question text for the first question is a `LaTeXString`; this type of string is supported throughout the package.
