@@ -10,6 +10,7 @@ Currently the package can be used to create the following types of questions:
 - cloze questions;
 - essey questions;
 - multiple choice questions.
+- etc
 
 ## Installing the package
 Will write here how to install the package once it's written as a module.

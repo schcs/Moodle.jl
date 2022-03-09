@@ -2,12 +2,22 @@
 # of type matching
 
 @doc """
-The data structure to hold a matching type Moodle question
+The data structure to hold a matching question.
+
+$(TYPEDEF)
+$(TYPEDFIELDS)
+
+The standard way to create a matching question is the following. 
+
+```repl
+q = matching_question( "Absolute value", "Combine each number with its absolute value.", [(2,2),(-2,2),(0,0),(-1.5,1.5), ("",3),(""-3)] )
+```
 """ ->
 
+
 struct matching_question
-    title::String                   # the title of the question
-    text::String                    # the text of the question
+    title::AbstractString                   # the title of the question
+    text::AbstractString                    # the text of the question
     subquestions::Vector{Tuple}    # things to be matched
     defgrade::Int64                 # required by Moodle, usually 1
     penalty::Float64                # we're not sure about this.  required by Moodle, it's usually 0.1
@@ -20,7 +30,8 @@ end
 # the idea is that the question will take 4 inputs title, text, subquestions, shuffle.  
 # penalty will be 0.1, defgrade will be 1, and tags will be empty.  I'm testing to see if I can avoid taking the first 4 entries above.
 
-function matching_question( title, text, subquestions; defgrade = 1, penalty = 0.1, shuffle = true, tags = [] )
+function matching_question( title::AbstractString, text::AbstractString, subquestions::Vector{Tuple{T1,T2}}                   where T1 where T2; 
+                    defgrade = 1, penalty = 0.1, shuffle = true, tags = [] )::matching_question
     
     if intersect( [ x[2] for x in subquestions if x[1] != "" ],
                 [ x[2] for x in subquestions if x[1] == "" ]) != [] 
@@ -31,7 +42,7 @@ function matching_question( title, text, subquestions; defgrade = 1, penalty = 0
                 subquestions, defgrade, penalty, shuffle, tags )
 end 
 
-function MatchingQuestion( title::AbstractString, text::AbstractString, param::Tuple, 
+function matching_question( title::AbstractString, text::AbstractString, param::Tuple, 
             func; sep_left = "[[", sep_right = "]]", tags = [] )::matching_question
 
     text = substitute_latex_string( text, param, sep_left = sep_left, sep_right = sep_right )
@@ -61,7 +72,7 @@ end
 
 show_pdf( q::matching_question ) = render( write_latex( q ), MIME( "application/pdf" ))
 
-function MoodleSubQuestion( QApair::Tuple )
+function moodle_subquestion( QApair::Tuple )
     question = QApair[1] 
     answer = QApair[2]
 
@@ -107,7 +118,7 @@ function QuestionToXML( question::matching_question )
 
 
     for ans in question.subquestions
-        xmlstring *= MoodleSubQuestion( ans )
+        xmlstring *= moodle_subquestion( ans )
     end
 
 
