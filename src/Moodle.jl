@@ -6,11 +6,13 @@ using StatsBase, LinearAlgebra, LaTeXStrings, Latexify, DocStringExtensions, Lat
 
 export matching_question,
         multiple_choice_question,
-        matching_question,
-        MoodleQuizToFile,
         short_answer_question,
         VF_CLOZE_question,
+        cloze_question,
+        cloze_subquestion,
         essay_question
+        moodle_quiz_to_file
+
 
 current_dir = @__DIR__
 

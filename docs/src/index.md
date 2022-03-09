@@ -28,8 +28,9 @@ The package can be installed and activated by typing
 A simple moodle quiz can be created as follows. First we create two questions 
 
 ```repl
-q1 = short_answer_question( "Question 1", L"What is the sum of \$2\$ and \$-3\$?", -1 );
-q2 = q = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [(0,true),(-1,false),(2,true)])
+using LaTeXStrings
+q1 = short_answer_question( "Question 1", L"What is the sum of $2$ and $-3$?", -1 );
+q2 = multiple_choice_question( "Even numbers", "Which of the following numbers are even?", [(0,true),(-1,false),(2,true)])
 ```
 
 Then we write the array of these two questions into an XML file as follows.
