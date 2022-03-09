@@ -1,6 +1,6 @@
 
-#push!(LOAD_PATH, (@__DIR__)*"/../src" )
-#import Pkg; Pkg.add( "Documenter" )
+push!(LOAD_PATH, (@__DIR__)*"/../src" )
+import Pkg; Pkg.add( "Documenter" )
 using Documenter
 using Moodle
 
