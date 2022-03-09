@@ -10,7 +10,7 @@ export matching_question,
         VF_CLOZE_question,
         cloze_question,
         cloze_subquestion,
-        essay_question
+        essay_question,
         moodle_quiz_to_file
 
 
