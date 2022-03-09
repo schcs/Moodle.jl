@@ -31,7 +31,7 @@ end
 converts a quiz to XML string and writes it into a file
 """->
 
-function MoodleQuizToFile( category, questions, filename )
+function moodle_quiz_to_file( category, questions, filename )
     # write a header
     
     f = open( filename, "w" )
