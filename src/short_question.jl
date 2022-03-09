@@ -39,7 +39,7 @@ These last two lines create 165 questions, one for each entry in the array param
 
 Both methods accept the optional arguments penalty, defgrade and tags. For the meaning of penalty and defgrade, consult the documentation of Moodle. The argument tags is a list of strings that will appear as tags for the question once imported from Moodle.
 
-The second version also accepts the optional argument sep_left and/or sep_right that are strings marking the beginning and the end of the placeholders. The default values are "[[" and "]]", but these can be changed if the user needs these characters for other purposes. 
+The second version also accepts the optional argument `sep_left` and/or `sep_right` that are strings marking the beginning and the end of the placeholders. The default values are "[[" and "]]", but these can be changed if the user needs these characters for other purposes. 
 """ ->
  
 struct short_answer_question

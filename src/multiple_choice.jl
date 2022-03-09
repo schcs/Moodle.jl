@@ -47,6 +47,8 @@ In each of these versions, the function multiple_choice_question has the followi
 - shuffle: true or false; controls if the answers should or should not be shuffled;
 - wrongmarkzero: true or false; controls if marking an incorrect answer should result in the reduction of the mark recieved by the student. The default is true and the marks for the answers are calculated in such a way that the students receive zero marks if they click all the options, and also when they leave all the options unclicked. 
 
+The parametric version also accepts the optional argument `sep_left` and/or `sep_right` that are strings marking the beginning and the end of the placeholders. The default values are "[[" and "]]", but these can be changed if the user needs these characters for other purposes.
+
 """ ->
 
 struct multiple_choice_question

@@ -4,7 +4,18 @@
 
 # THIS ISN'T DONE YET:
 @doc """
-The data structure to hold a essay type Moodle question
+The data structure to hold an essay question.
+
+$(TYPEDEF)
+$(TYPEDFIELDS)
+
+At the moment an essay question can be created as follows. 
+
+```@repl
+q = essay_question( "Galois Theory.", "State and prove the Fundamental Theorem of Galois Theory", tags = ["Q1" ] )
+```
+
+Note that the optional arguments defgrade and penalty are not yet implemented for essay questions. Also there is no paramentric version and the functions write_latex and Base.show are not yet implemented for this type of questions.
 """ ->
 
 struct essay_question
@@ -17,6 +28,11 @@ struct essay_question
 end 
 
 # most basic implementation, with title, question title and tags (optional)
+
+@doc """
+$(SIGNATURES)
+""" ->
+
 function essay_question( title, question_text; tags = [] )
     
     return essay_question( title, question_text, tags )
@@ -25,12 +41,14 @@ end
 
 
 #title :: String, initial_text :: String ,  list_of_statements :: Vector
-
 # Padrão initial text suggestion: Para cada das seguintes afirmações, decida se ela é verdadeira ou falsa:
-
 # makes a string of all the statements in XML
-function QuestionToXML(  question :: essay_question )
+@doc """ 
+    Writes a Moodle question into an XML string.
 
+$(SIGNATURES)
+""" ->
+function question_to_xml(  question :: essay_question )
     
     xmlstring = "<question type=\"essay\">
     <name>

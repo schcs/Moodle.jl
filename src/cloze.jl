@@ -68,11 +68,55 @@ MC, MCH, MCV, MR and MRH can have their options shuffled by appending "S" at the
 MRHS arranges {1:MRHS:=as~=a~=horizontal~list}
 =#
 
+@doc """
+The data structure to hold a cloze subquestion.
+
+$(TYPEDEF)
+$(TYPEDFIELDS)
+
+The possible values of type are 
+- MC: Multuple Choice;
+- MCV: Multiple Choice Vertical; 
+- MCH: Multuple Choice Horizontal; 
+- SA: Short Answer; 
+- NM: Numerical; 
+- MCVS: Multichoice Vertical Radio Buttons
+
+The following line creates a cloze_subquestion of type SA, grade 1 with correct answer 2.
+
+```@repl
+s1 = cloze_subquestion( "SA", 1, [(2,true)])
+```
+
+The following creates a multiple choice subquestion of grade 1 with correct answers 2, 4 and incorrect answers 3, 5.
+
+```@repl
+s2 = cloze_subquestion( "MC", 1, [(2,true),(4,true),(3,false),(5,false)])
+```
+""" ->
+
 struct cloze_subquestion
     type::String
     grade::UInt64
     answers::Vector{Union{Tuple{Union{AbstractString,Number},Number},Tuple{Union{AbstractString,Number},Number,Number}}}
 end 
+
+@doc """
+The data structure to hold a cloze subquestion.
+
+$(TYPEDEF)
+$(TYPEDFIELDS)
+
+The simplest way to create a cloze question is to create the subquestions first (see above) and then the question itself.
+
+```@repl 
+q = cloze_question( "Even numbers", "Mark the even numbers from the following list {{1}}. How many numbers did you mark? {{2}}", [ s2, s1 ] )
+```
+
+The line above combines the two subquestions `s1` and `s2` into a single close type question.
+
+One may supply the optional arguments `defgrade`, `penalty` (see the Moodle system documentation) and `tags`; the latter is an array of strings specifying the tags that appear with the question on Moodle.
+""" ->
 
 struct cloze_question 
         title::String                       # the title of the question
@@ -101,7 +145,9 @@ function cloze_question( title::AbstractString, text::AbstractString, subquestio
     return cloze_question( title, text, subquestions, defgrade, penalty, tags )
 end
 
-function ClozeQuestion( title::AbstractString, text::AbstractString, 
+# experimental parametric version
+
+function cloze_question( title::AbstractString, text::AbstractString, 
             subquestions::Vector, params; 
             defgrade = 1, penalty = 1, tags = [], sep_left = "[[", sep_right = "]]" )
     
@@ -158,7 +204,7 @@ end
     
 show_pdf( q::cloze_question ) = render( write_latex( q ), MIME( "application/pdf" ))
 
-function QuestionToXML( question::cloze_question )
+function question_to_xml( question::cloze_question )
 
     qtext = moodle_string( question.text )
     
