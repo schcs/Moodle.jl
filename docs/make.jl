@@ -1,13 +1,19 @@
-# Inside make.jl
+
 push!(LOAD_PATH, (@__DIR__)*"/../src" )
-include( (@__DIR__)*"/../src/Moodle.jl" )
-using Documenter, LatexPrint
+using Documenter
+using Moodle
+
 makedocs(
-         sitename = "Moodle.jl",
-         modules  = Module[],
-         pages=[
-                "Home" => "index.md"
-               ])
-deploydocs(;
-    repo="github.com/schcs/Moodle.jl",
+    sitename = "Moodle",
+    format = Documenter.HTML(),
+    modules = [Moodle]
 )
+
+# Documenter can also automatically deploy documentation to gh-pages.
+# See "Hosting Documentation" and deploydocs() in the Documenter manual
+# for more information.
+#=
+deploydocs(
+    repo = "https://schcs.github.io/Moodle.jl/"
+)
+=#
