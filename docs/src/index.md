@@ -1,12 +1,14 @@
 # Moodle.jl
 *An experimental Julia package for creating Moodle questions.*
 
-A simple change.
 
 ## Package Features
 Currently the package can be used to create the following types of questions:
-- short answer type questions;
+- [short answer questions](short_answer.md);
 - matching question;
+- [multiple choice questions](multiple_choice.md);
+- cloze questions;
+- essey questions;
 - multiple choice questions.
 
 ## Installing the package
