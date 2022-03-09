@@ -8,7 +8,7 @@ Currently the package can be used to create the following types of questions:
 - [matching question](matching);
 - [multiple choice questions](multiple_choice.md);
 - [cloze questions](cloze.md);
-- [essey questions](essay.md);
+- [essay questions](essay.md);
 
 ## Installing the package
 Will write here how to install the package once it's written as a module.
