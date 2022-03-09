@@ -2,12 +2,11 @@
 # it has to be included to use the functions
 module Moodle
 
-using LatexPrint, StatsBase, LinearAlgebra, LaTeXStrings, Latexify, DocStringExtensions
+using StatsBase, LinearAlgebra, LaTeXStrings, Latexify, DocStringExtensions
 
 export matching_question,
         multiple_choice_question,
-        multiple_choice_question_by_function, 
-        multiple_choice_question_by_lists,
+        matching_question,
         MoodleQuizToFile,
         short_answer_question,
         VF_CLOZE_question,
