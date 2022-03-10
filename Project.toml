@@ -1,6 +1,6 @@
 name = "Moodle"
 uuid = "cfd391bf-b196-4033-bdf1-022d76f10309"
-authors = ["Csaba Schneider <csaba.schneider@gmail.com>"]
+authors = ["Lucas Calixto <lhcalixto.mat@gmail.com>", "John MacQuarrie <john.macquarrie@googlemail.com>", "Csaba Schneider <csaba.schneider@gmail.com>"]
 version = "0.1.0"
 
 [deps]
